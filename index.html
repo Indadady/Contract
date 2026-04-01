@@ -34,7 +34,7 @@
         
         /* 인쇄 최적화 스타일 (A4 1장에 완벽 맞춤) */
         @media print {
-            @page { size: A4; margin: 10mm 15mm; }
+            @page { size: A4; margin: 10mm 10mm; }
             body { background-color: white; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             .no-print { display: none !important; }
             .print-container {
@@ -126,8 +126,8 @@
     <!-- 와이드 화면 레이아웃 컨테이너 -->
     <div class="max-w-[1300px] mx-auto py-8 px-4 flex flex-col lg:flex-row gap-8 items-start justify-center relative">
         
-        <!-- 메인 계약서 영역 (A4 사이즈 고정) -->
-        <div class="print-container bg-white w-full lg:w-[21cm] lg:min-w-[21cm] p-10 shadow-xl box-border mx-auto lg:mx-0">
+        <!-- 메인 계약서 영역 (가로 폭을 22.5cm로 늘리고, 좌우 여백을 줄여 시원하게 확보) -->
+        <div class="print-container bg-white w-full lg:w-[22.5cm] lg:min-w-[22.5cm] px-8 py-10 shadow-xl box-border mx-auto lg:mx-0">
             
             <!-- 헤더 / 로고 -->
             <div class="flex justify-between items-end border-b-2 border-slate-800 pb-3 mb-5">
