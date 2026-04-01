@@ -3,6 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- 카카오톡 공유 썸네일 (Open Graph) -->
+    <meta property="og:title" content="투어메이커 표준 여행계약서">
+    <meta property="og:description" content="쉽고 빠른 맞춤형 스마트 전자계약 시스템">
+    <meta property="og:image" content="https://blogger.googleusercontent.com/img/a/AVvXsEhPxG_ONo2BdFAGDNnn-pHIGJTrAq374YbqgwTTlyIZTP22kOWTDD_AyjKDNFPhsHg5t1Iq6zV0dL_NZIj4o97Kd0eWJYCv-NHhtIqme-Mp3htGhAdkqVv5NRU3Jc9TbdbvvVKrPslObA1oNABpgl12QtGwirC2QM5lcPCVoWm8pIbeKuZBbeDHAvpbKEQ">
+    <meta property="og:type" content="website">
+
     <title>투어메이커 - 표준 여행계약서</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -100,6 +107,9 @@
             width: 70px;
             height: auto;
             mix-blend-mode: multiply;
+            /* 직인 선명도 향상 강제 적용 */
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
         }
         #seal-image:active {
             cursor: grabbing;
@@ -199,18 +209,18 @@
             <table>
                 <colgroup>
                     <col style="width: 15%;">
-                    <col style="width: 35%;">
+                    <col style="width: 25%;">
                     <col style="width: 15%;">
-                    <col style="width: 35%;">
+                    <col style="width: 45%;">
                 </colgroup>
                 <tbody>
                     <tr>
                         <th>총 계약 금액</th>
                         <td colspan="3">
                             <div class="flex items-center w-full">
-                                <span class="font-bold text-blue-700 mr-2 text-[15px]">₩</span>
-                                <!-- 숫자 입력칸 확충 & 자동완성 연결 -->
-                                <input type="text" id="num-amount" oninput="formatAmount(this)" placeholder="8,100,000" class="flex-1 min-w-0 font-bold text-[16px] text-blue-700 p-1.5 focus:bg-blue-50 transition-colors">
+                                <span class="font-bold text-blue-700 mr-2 text-[18px]">₩</span>
+                                <!-- 숫자 입력칸 확충(20px로 대폭 키움) & 콤마 자동완성 연결 -->
+                                <input type="text" id="num-amount" oninput="formatAmount(this)" placeholder="8,100,000" class="flex-1 min-w-0 font-bold text-[20px] text-blue-700 p-1.5 focus:bg-blue-50 transition-colors tracking-wide h-9">
                                 <span class="text-[12px] font-normal text-slate-500 ml-4 whitespace-nowrap">(일금:</span>
                                 <!-- 한글 금액칸: 배경 투명, 수정 불가 처리로 자연스럽게 보이게 함 -->
                                 <input type="text" id="korean-amount" placeholder="팔백십만" class="w-[120px] text-[13px] font-bold p-1 mx-1 text-center bg-transparent border-none text-slate-800 pointer-events-none" readonly tabindex="-1">
@@ -221,24 +231,19 @@
                     <tr>
                         <th>계약금</th>
                         <td>
-                            <!-- 금액 칸 넓히고 기한 칸 컴팩트하게 축소 -->
-                            <div class="flex items-center justify-between gap-2 w-full">
-                                <div class="flex items-center flex-1 min-w-0">
-                                    <span class="font-bold text-slate-700 mr-1">₩</span>
-                                    <input type="text" placeholder="810,000" class="w-full p-1 h-7 text-[13px]">
-                                </div>
-                                <div class="flex items-center text-[11px] text-slate-500 shrink-0">
-                                    <span class="whitespace-nowrap mr-1">기한:</span>
-                                    <input type="date" class="w-24 p-0 text-[11px] border-b border-slate-300 bg-transparent rounded-none focus:ring-0 cursor-pointer">
-                                </div>
+                            <!-- 기한 칸 삭제, 콤마 자동 추가 적용, 금액 칸 시원하게 확장 -->
+                            <div class="flex items-center w-full">
+                                <span class="font-bold text-slate-700 mr-1 text-[14px]">₩</span>
+                                <input type="text" placeholder="810,000" oninput="formatNumberInput(this)" class="w-full p-1.5 h-8 text-[14px] font-medium tracking-wide">
                             </div>
                         </td>
                         <th>잔금</th>
                         <td>
+                            <!-- 금액 칸 넓히고 기한 칸 컴팩트하게 축소, 콤마 자동 추가 적용 -->
                             <div class="flex items-center justify-between gap-2 w-full">
                                 <div class="flex items-center flex-1 min-w-0">
-                                    <span class="font-bold text-slate-700 mr-1">₩</span>
-                                    <input type="text" placeholder="7,290,000" class="w-full p-1 h-7 text-[13px]">
+                                    <span class="font-bold text-slate-700 mr-1 text-[14px]">₩</span>
+                                    <input type="text" placeholder="7,290,000" oninput="formatNumberInput(this)" class="w-full p-1.5 h-8 text-[14px] font-medium tracking-wide">
                                 </div>
                                 <div class="flex items-center text-[11px] text-slate-500 shrink-0">
                                     <span class="whitespace-nowrap mr-1">기한:</span>
@@ -327,16 +332,16 @@
                         <h3 class="font-bold text-center text-slate-800 mb-2 pb-2 border-b border-slate-200 text-[13px]">여행자 (또는 대표기관)</h3>
                         <div class="space-y-3 text-[12px] pt-1 px-1">
                             <div class="flex items-center gap-2">
-                                <span class="w-16 font-semibold text-slate-600 shrink-0 text-left">단체/고객명</span>
+                                <span class="w-[70px] font-semibold text-slate-600 shrink-0 text-left whitespace-nowrap">단체/고객명</span>
                                 <input type="text" placeholder="예: 00중학교 또는 홍길동" class="flex-1 bg-slate-50 border-slate-300 p-1.5 h-7">
                             </div>
                             <div class="flex items-center gap-2">
-                                <span class="w-16 font-semibold text-slate-600 shrink-0 text-left">대 표 자</span>
+                                <span class="w-[70px] font-semibold text-slate-600 shrink-0 text-left whitespace-nowrap">대 표 자</span>
                                 <input type="text" placeholder="성명" class="flex-1 bg-slate-50 border-slate-300 p-1.5 h-7">
                                 <span class="text-slate-400 text-[12px] shrink-0 ml-1 font-medium">(인/서명)</span>
                             </div>
                             <div class="flex items-center gap-2">
-                                <span class="w-16 font-semibold text-slate-600 shrink-0 text-left">연 락 처</span>
+                                <span class="w-[70px] font-semibold text-slate-600 shrink-0 text-left whitespace-nowrap">연 락 처</span>
                                 <input type="text" placeholder="010-0000-0000" class="flex-1 bg-slate-50 border-slate-300 p-1.5 h-7">
                             </div>
                         </div>
@@ -444,6 +449,16 @@
             input.value = Number(val).toLocaleString('ko-KR');
             // 한글 변환 후 괄호 안 인풋박스에 세팅
             document.getElementById('korean-amount').value = numToKorean(val);
+        }
+
+        // --- 일반 숫자 콤마 변환 (계약금, 잔금 자동 콤마 처리용) ---
+        function formatNumberInput(input) {
+            let val = input.value.replace(/[^0-9]/g, '');
+            if (!val) {
+                input.value = '';
+                return;
+            }
+            input.value = Number(val).toLocaleString('ko-KR');
         }
 
 
