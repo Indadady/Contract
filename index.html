@@ -54,7 +54,9 @@
             input::placeholder, textarea::placeholder {
                 color: transparent !important;
             }
-            th, td { padding: 0.35rem 0.4rem !important; font-size: 0.85rem !important; }
+            th, td { padding: 0.35rem 0.4rem !important; font-size: 0.85rem !important; border: 1px solid #cbd5e1 !important; display: table-cell !important; }
+            tr { display: table-row !important; border: none !important; }
+            table, tbody { display: table !important; width: 100% !important; }
             h1 { font-size: 1.4rem !important; margin-bottom: 0.4rem !important; }
             h2 { font-size: 0.95rem !important; margin-top: 1rem !important; margin-bottom: 0.4rem !important; }
             p.text-sm { font-size: 0.8rem !important; }
@@ -63,6 +65,40 @@
             .pt-6 { padding-top: 0.8rem !important; }
             table { margin-bottom: 0.8rem !important; }
             #seal-image { border: none !important; }
+        }
+
+        /* 모바일 환경 최적화 스타일 (화면 너비 768px 이하) */
+        @media screen and (max-width: 768px) {
+            table, tbody { display: block; width: 100%; }
+            tr { 
+                display: flex; 
+                flex-direction: column; 
+                border: 1px solid #cbd5e1; 
+                margin-bottom: 0.75rem; 
+                border-radius: 0.5rem; 
+                overflow: hidden; 
+                background-color: #ffffff;
+            }
+            th, td { 
+                display: block; 
+                width: 100%; 
+                border: none; 
+            }
+            th { 
+                background-color: #f8fafc; 
+                text-align: left; 
+                padding: 0.6rem 0.75rem; 
+                font-size: 0.85rem; 
+                font-weight: 600; 
+                border-bottom: 1px solid #e2e8f0; 
+                color: #475569;
+            }
+            td { 
+                padding: 0.6rem 0.75rem; 
+                border-bottom: 1px solid #f1f5f9; 
+            }
+            td:last-child { border-bottom: none; }
+            colgroup { display: none; }
         }
 
         /* 폼 입력 요소 기본 스타일 */
@@ -90,10 +126,10 @@
             box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
         }
         
-        /* 테이블 기본 세팅 */
+        /* 테이블 기본 세팅 (PC) */
         table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; table-layout: fixed; }
         th, td { border: 1px solid #cbd5e1; padding: 0.4rem 0.5rem; vertical-align: middle; }
-        th { background-color: #f1f5f9; font-weight: 500; text-align: center; color: #334155; white-space: nowrap; font-size: 0.85rem; }
+        th { background-color: #f1f5f9; font-weight: 500; text-align: center; color: #334155; font-size: 0.85rem; }
         
         /* 직인(도장) 드래그 관련 스타일 */
         .signature-box { position: relative; }
@@ -110,6 +146,8 @@
             /* 직인 선명도 향상 강제 적용 */
             image-rendering: -webkit-optimize-contrast;
             image-rendering: crisp-edges;
+            /* 모바일 터치 스크롤 방지 */
+            touch-action: none;
         }
         #seal-image:active {
             cursor: grabbing;
@@ -124,21 +162,69 @@
 <body class="font-sans text-gray-900 overflow-x-hidden">
 
     <!-- 와이드 화면 레이아웃 컨테이너 -->
-    <div class="max-w-[1300px] mx-auto py-8 px-4 flex flex-col lg:flex-row gap-8 items-start justify-center relative">
+    <div class="max-w-[1300px] mx-auto py-4 sm:py-8 px-4 flex flex-col lg:flex-row gap-6 lg:gap-8 items-start justify-center relative">
         
-        <!-- 메인 계약서 영역 (가로 폭을 22.5cm로 늘리고, 좌우 여백을 줄여 시원하게 확보) -->
-        <div class="print-container bg-white w-full lg:w-[22.5cm] lg:min-w-[22.5cm] px-8 py-10 shadow-xl box-border mx-auto lg:mx-0">
+        <!-- 우측 컨트롤 패널 (모바일에서는 최상단에 위치하도록 order-first 적용) -->
+        <div class="w-full lg:w-72 sticky top-4 lg:top-8 no-print control-panel p-5 rounded-xl shadow-lg shrink-0 order-first lg:order-last z-50">
+            <h3 class="font-bold text-slate-800 text-[15px] mb-2 border-b border-slate-200 pb-2 flex justify-between items-center">
+                계약서 설정 도구
+                <span class="lg:hidden text-[11px] text-blue-500 font-normal">▼ 스크롤하여 계약서 작성</span>
+            </h3>
+            
+            <!-- 회사 선택 -->
+            <div class="flex flex-col gap-2 text-[13px] mt-3">
+                <label class="font-bold text-slate-700 bg-slate-100 p-1.5 rounded text-center">🏢 발급 주체 선택</label>
+                <label class="flex items-center cursor-pointer hover:bg-blue-50 p-1.5 rounded border border-transparent hover:border-blue-100 transition">
+                    <input type="radio" name="companyType" value="jeongseon" checked onchange="changeCompany()" class="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500">
+                    (주)투어메이커
+                </label>
+                <label class="flex items-center cursor-pointer hover:bg-blue-50 p-1.5 rounded border border-transparent hover:border-blue-100 transition">
+                    <input type="radio" name="companyType" value="taebaek" onchange="changeCompany()" class="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500">
+                    투어메이커
+                </label>
+                <label class="flex items-center cursor-pointer hover:bg-orange-50 p-1.5 rounded border border-transparent hover:border-orange-100 transition">
+                    <input type="radio" name="companyType" value="jeju" onchange="changeCompany()" class="mr-2 h-4 w-4 text-orange-500 focus:ring-orange-500">
+                    <span class="text-orange-700 font-medium">(주)우리들여행</span>
+                </label>
+            </div>
+
+            <!-- 직인(도장) 설정 (노출/숨김 및 크기) -->
+            <div class="mt-4 text-[13px] bg-slate-50 p-3 rounded-lg border border-slate-100">
+                <div class="flex justify-between items-center mb-2">
+                    <label class="font-bold text-slate-700">🔴 직인(도장) 설정</label>
+                    <div class="flex gap-2 text-[12px]">
+                        <label class="flex items-center cursor-pointer hover:text-blue-600"><input type="radio" name="sealToggle" value="show" checked onchange="toggleSeal(this.value)" class="mr-1 accent-blue-600">노출</label>
+                        <label class="flex items-center cursor-pointer hover:text-blue-600"><input type="radio" name="sealToggle" value="hide" onchange="toggleSeal(this.value)" class="mr-1 accent-blue-600">숨김</label>
+                    </div>
+                </div>
+                <input type="range" id="sealSize" min="40" max="120" value="70" class="w-full accent-blue-600 mt-1" oninput="changeSealSize(this.value)">
+                <p class="text-[11px] text-slate-500 mt-2 text-center leading-tight">마우스/터치로 도장을 직접 끌어당기거나<br>인쇄 전 숨김 처리할 수 있습니다.</p>
+            </div>
+
+            <div class="mt-5 pt-4 border-t border-slate-200 flex flex-col gap-2">
+                <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-md flex items-center justify-center transition w-full text-[14px]">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                    PDF 저장 / 인쇄하기
+                </button>
+                <button onclick="clearForm()" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2.5 px-4 rounded-lg shadow flex items-center justify-center transition w-full text-[13px]">
+                    입력 내용 전체 초기화
+                </button>
+            </div>
+        </div>
+
+        <!-- 메인 계약서 영역 (모바일 여백 최적화) -->
+        <div class="print-container bg-white w-full lg:w-[22.5cm] lg:min-w-[22.5cm] px-4 py-6 sm:px-8 sm:py-10 shadow-xl box-border mx-auto lg:mx-0 rounded-lg lg:rounded-none">
             
             <!-- 헤더 / 로고 -->
-            <div class="flex justify-between items-end border-b-2 border-slate-800 pb-3 mb-5">
-                <div>
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end border-b-2 border-slate-800 pb-3 mb-5 gap-4 sm:gap-0">
+                <div class="order-last sm:order-first">
                     <a href="https://tourmaker.kr" target="_blank" class="no-print" title="회사 홈페이지로 이동">
-                        <img id="main-logo-1" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHfgIX70O5k6Anuo0UgALIdaG9jSga9auHu3uyz0uEirylGPAJnjN_qQbvEGMUvPqUQf_g9FMNUHRxlDcUBf4vZ3Mpy4TnA9WxbmzWYK11gt2zuy_Irl4wctNFjcjLyPo0GPXV792o_J7L9guRMuDfeC1gy7USwywjYbECZgzcsHybuGRRAXAnO1eNmP8/s320/logo.png" alt="Company Logo" class="h-10 object-contain transition-all">
+                        <img id="main-logo-1" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHfgIX70O5k6Anuo0UgALIdaG9jSga9auHu3uyz0uEirylGPAJnjN_qQbvEGMUvPqUQf_g9FMNUHRxlDcUBf4vZ3Mpy4TnA9WxbmzWYK11gt2zuy_Irl4wctNFjcjLyPo0GPXV792o_J7L9guRMuDfeC1gy7USwywjYbECZgzcsHybuGRRAXAnO1eNmP8/s320/logo.png" alt="Company Logo" class="h-8 sm:h-10 object-contain transition-all">
                     </a>
                     <img id="main-logo-2" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHfgIX70O5k6Anuo0UgALIdaG9jSga9auHu3uyz0uEirylGPAJnjN_qQbvEGMUvPqUQf_g9FMNUHRxlDcUBf4vZ3Mpy4TnA9WxbmzWYK11gt2zuy_Irl4wctNFjcjLyPo0GPXV792o_J7L9guRMuDfeC1gy7USwywjYbECZgzcsHybuGRRAXAnO1eNmP8/s320/logo.png" alt="Company Logo" class="h-10 object-contain hidden print:block">
                 </div>
-                <div class="text-right">
-                    <h1 class="text-3xl font-bold tracking-tight text-slate-900 m-0">표준 여행계약서</h1>
+                <div class="text-left sm:text-right w-full sm:w-auto">
+                    <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 m-0">표준 여행계약서</h1>
                     <p class="text-[11px] text-slate-500 mt-1 uppercase tracking-widest">Standard Travel Contract</p>
                 </div>
             </div>
@@ -167,13 +253,15 @@
                     </tr>
                     <tr>
                         <th>여행 기간</th>
-                        <td class="whitespace-nowrap">
-                            <div class="flex items-center gap-1 w-full">
-                                <input type="date" class="flex-1 min-w-0 p-1 text-[13px]"> 
-                                <span class="text-slate-400 font-bold">~</span> 
-                                <input type="date" class="flex-1 min-w-0 p-1 text-[13px]">
+                        <td>
+                            <div class="flex flex-col xl:flex-row items-start xl:items-center gap-2 w-full">
+                                <div class="flex items-center gap-1 w-full xl:w-auto">
+                                    <input type="date" class="flex-1 min-w-0 p-1 text-[13px]"> 
+                                    <span class="text-slate-400 font-bold">~</span> 
+                                    <input type="date" class="flex-1 min-w-0 p-1 text-[13px]">
+                                </div>
+                                <input type="text" placeholder="예: 3박 5일 (상세 일정표 참조)" class="mt-1 xl:mt-0 p-1 h-7 text-[13px] w-full xl:w-auto xl:flex-1">
                             </div>
-                            <input type="text" placeholder="예: 3박 5일 (상세 일정표 참조)" class="mt-1 p-1 h-7 text-[13px] w-full">
                         </td>
                         <th>여행 지역</th>
                         <td><input type="text" placeholder="예: 싱가포르 등"></td>
@@ -192,12 +280,12 @@
             </table>
 
             <!-- 2. 여행 요금 및 결제 -->
-            <div class="flex justify-between items-end mb-2 mt-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-2 mt-6 gap-3 sm:gap-0">
                 <h2 class="text-md font-bold flex items-center text-slate-800 m-0">
                     <span class="w-1 h-4 bg-blue-600 inline-block mr-2"></span> 2. 여행 요금 및 결제
                 </h2>
                 <!-- 부가세 총액/순액 탭 추가 -->
-                <div class="flex items-center gap-3 text-[12px] font-medium font-sans bg-slate-100 px-3 py-1.5 rounded text-slate-600">
+                <div class="flex items-center gap-3 text-[12px] font-medium font-sans bg-slate-100 px-3 py-1.5 rounded text-slate-600 w-full sm:w-auto justify-center sm:justify-start">
                     <label class="flex items-center cursor-pointer hover:text-blue-600">
                         <input type="radio" name="vatType" value="총액" checked class="mr-1.5 w-3.5 h-3.5 accent-blue-600">총액 계약 (VAT포함)
                     </label>
@@ -217,14 +305,14 @@
                     <tr>
                         <th>총 계약 금액</th>
                         <td colspan="3">
-                            <div class="flex items-center w-full gap-3">
-                                <!-- 메인: 숫자 입력칸을 가장 길고 돋보이게 -->
-                                <div class="flex items-center flex-1 min-w-0">
-                                    <span class="font-bold text-blue-700 mr-2 text-[22px]">₩</span>
-                                    <input type="text" id="num-amount" oninput="formatAmount(this); calculateBalance();" placeholder="8,100,000" class="flex-1 min-w-0 font-bold text-[24px] text-blue-700 p-2 focus:bg-blue-50 transition-colors tracking-widest h-10">
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center w-full gap-2 sm:gap-3">
+                                <!-- 메인: 숫자 입력칸 -->
+                                <div class="flex items-center w-full sm:flex-1 min-w-0">
+                                    <span class="font-bold text-blue-700 mr-2 text-[20px] sm:text-[22px]">₩</span>
+                                    <input type="text" id="num-amount" oninput="formatAmount(this); calculateBalance();" placeholder="8,100,000" class="flex-1 min-w-0 font-bold text-[20px] sm:text-[24px] text-blue-700 p-2 focus:bg-blue-50 transition-colors tracking-widest h-10 w-full">
                                 </div>
-                                <!-- 서브: 한글 변환칸을 우측에 작고 컴팩트하게 배치 -->
-                                <div class="flex items-center shrink-0 bg-slate-50 border border-slate-200 rounded px-3 py-1.5">
+                                <!-- 서브: 한글 변환칸 (모바일 대응 flex wrap) -->
+                                <div class="flex items-center shrink-0 w-full sm:w-auto bg-slate-50 border border-slate-200 rounded px-3 py-1.5 justify-center sm:justify-start">
                                     <span class="text-[12px] font-normal text-slate-500 whitespace-nowrap">(일금:</span>
                                     <input type="text" id="korean-amount" placeholder="팔백십만" class="w-[90px] text-[13px] font-bold p-0 mx-1 text-center bg-transparent border-none text-slate-700 pointer-events-none focus:ring-0" readonly tabindex="-1">
                                     <span class="text-[12px] font-normal text-slate-500 whitespace-nowrap">원정)</span>
@@ -235,7 +323,6 @@
                     <tr>
                         <th>계약금</th>
                         <td>
-                            <!-- 기한 칸 삭제, 콤마 자동 추가 적용, 잔금 자동 계산 트리거 추가 -->
                             <div class="flex items-center w-full">
                                 <span class="font-bold text-slate-700 mr-1 text-[14px]">₩</span>
                                 <input type="text" id="deposit-amount" placeholder="810,000" oninput="formatNumberInput(this); calculateBalance();" class="w-full p-1.5 h-8 text-[14px] font-medium tracking-wide">
@@ -243,15 +330,15 @@
                         </td>
                         <th>잔금</th>
                         <td>
-                            <!-- 금액 칸 넓히고 기한 칸 컴팩트하게 축소, 자동/수동 콤마 입력 모두 가능 -->
-                            <div class="flex items-center justify-between gap-2 w-full">
-                                <div class="flex items-center flex-1 min-w-0">
+                            <!-- 금액 및 기한 (모바일 줄바꿈 허용) -->
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 w-full">
+                                <div class="flex items-center w-full sm:flex-1 min-w-0">
                                     <span class="font-bold text-slate-700 mr-1 text-[14px]">₩</span>
                                     <input type="text" id="balance-amount" placeholder="7,290,000" oninput="formatNumberInput(this)" class="w-full p-1.5 h-8 text-[14px] font-medium tracking-wide">
                                 </div>
-                                <div class="flex items-center text-[11px] text-slate-500 shrink-0">
-                                    <span class="whitespace-nowrap mr-1">기한:</span>
-                                    <input type="date" class="w-24 p-0 text-[11px] border-b border-slate-300 bg-transparent rounded-none focus:ring-0 cursor-pointer">
+                                <div class="flex items-center text-[11px] text-slate-500 shrink-0 w-full sm:w-auto mt-1 sm:mt-0">
+                                    <span class="whitespace-nowrap mr-1 w-10 sm:w-auto">기한:</span>
+                                    <input type="date" class="flex-1 sm:w-24 p-0 text-[11px] border-b border-slate-300 bg-transparent rounded-none focus:ring-0 cursor-pointer">
                                 </div>
                             </div>
                         </td>
@@ -259,9 +346,12 @@
                     <tr>
                         <th class="bg-blue-50/50">입금 계좌</th>
                         <td colspan="3" class="bg-blue-50/20">
-                            <div class="flex items-center font-bold text-[13px]">
-                                <span id="txt-bank-name" class="mr-3 text-slate-700">신협</span>
-                                <span id="txt-bank-account" class="mr-4 text-blue-600 text-[15px] tracking-wider">131-022-382094</span>
+                            <!-- 모바일 계좌번호 UI 겹침 방지 -->
+                            <div class="flex flex-col sm:flex-row sm:items-center font-bold text-[13px] gap-1 sm:gap-0">
+                                <div class="flex items-center">
+                                    <span id="txt-bank-name" class="mr-3 text-slate-700">신협</span>
+                                    <span id="txt-bank-account" class="mr-4 text-blue-600 text-[15px] tracking-wider">131-022-382094</span>
+                                </div>
                                 <span class="text-slate-800 whitespace-nowrap">예금주 : <span id="txt-bank-holder">(주)투어메이커</span></span>
                             </div>
                         </td>
@@ -305,17 +395,17 @@
             <!-- 서명란 -->
             <div class="mt-8 pt-5 border-t-2 border-slate-800">
                 
-                <div class="flex justify-between items-end mb-3 px-1">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-4 px-1 gap-2 sm:gap-0">
                     <h2 class="text-md font-bold flex items-center text-slate-800 m-0">
                         <span class="w-1 h-4 bg-blue-600 inline-block mr-2"></span> 4. 계약자 서명
                     </h2>
-                    <!-- 계약일 줄바꿈 차단 (whitespace-nowrap 적용) 및 날짜칸 사이즈 최적화 -->
                     <div class="flex items-center text-[13px] font-bold text-slate-800 whitespace-nowrap">
                         계약체결일 : <input type="text" placeholder="2024년 10월 07일" class="w-28 text-center bg-transparent border-b border-slate-400 font-bold ml-2 rounded-none p-1 text-[13px] text-blue-800">
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-5">
+                <!-- 모바일에서 상하 배치 (grid-cols-1), PC에서 좌우 배치 (md:grid-cols-2) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <!-- 여행사 측 -->
                     <div class="border border-slate-300 rounded-lg p-4 bg-slate-50/50 signature-box">
                         <h3 class="font-bold text-center text-slate-800 mb-2 pb-2 border-b border-slate-200 text-[13px]">여행업자 (여행사)</h3>
@@ -331,7 +421,7 @@
                         <img id="seal-image" src="https://blogger.googleusercontent.com/img/a/AVvXsEiweUsH71be_Y3skDUBOVzZE0M4HnXmgllJq7c1JgatYy5eROHYdkvE9rMIcqVl0DQ2ypgr8fkZSQclgQjWOk8yZA5wiF326Ldf4KTrfd_YEsD2zZjyqsRLS65uv50SLZcLFqIvwZly49lEN3sheIMq4HV_VWLs1irf4o8g3-ajXCA7CaOlSvpKCT4Q2XA=s16000" alt="직인" title="마우스로 드래그하여 위치를 조정하세요.">
                     </div>
 
-                    <!-- 여행자 측 (심플한 3줄 포맷으로 완벽 압축) -->
+                    <!-- 여행자 측 -->
                     <div class="border border-slate-300 rounded-lg p-4">
                         <h3 class="font-bold text-center text-slate-800 mb-2 pb-2 border-b border-slate-200 text-[13px]">여행자 (또는 대표기관)</h3>
                         <div class="space-y-3 text-[12px] pt-1 px-1">
@@ -355,61 +445,16 @@
 
             <!-- 투어메이커 트래블테크 제휴 푸터 영역 -->
             <div class="mt-6 text-center border-t border-slate-200 pt-3 pb-1">
-                <p class="text-[11px] text-slate-400 mb-2">
-                    본 계약서는 [관광진흥법] 및 [소비자 분쟁해결기준]에 근거하여 작성된 표준 양식입니다. <br>
+                <p class="text-[11px] text-slate-400 mb-2 px-2">
+                    본 계약서는 [관광진흥법] 및 [소비자 분쟁해결기준]에 근거하여 작성된 표준 양식입니다. <br class="hidden sm:block">
                     자세한 여행 약관 및 일정은 별도로 교부된 자료(스마트 가이드북, 견적서, 상세일정표)를 참조하시기 바랍니다.
                 </p>
                 <p class="text-[12px] text-[#6c757d] font-sans mt-2">
-                    [System Powered by <a href="https://tourmaker.kr" target="_blank" class="font-bold text-[#6c757d] hover:text-blue-600 transition underline">TOURMAKER</a>] <br>
+                    [System Powered by <a href="https://tourmaker.kr" target="_blank" class="font-bold text-[#6c757d] hover:text-blue-600 transition underline">TOURMAKER</a>] <br class="hidden sm:block">
                     본 전자계약 시스템은 <span id="txt-footer-agency" class="font-bold">(주)투어메이커</span>의 기획과 투어메이커의 트래블 테크 기술 제휴로 제작되었습니다.
                 </p>
             </div>
 
-        </div>
-
-        <!-- 우측 컨트롤 패널 -->
-        <div class="w-full lg:w-72 sticky top-8 no-print control-panel p-5 rounded-xl shadow-lg shrink-0">
-            <h3 class="font-bold text-slate-800 text-[15px] mb-2 border-b border-slate-200 pb-2">계약서 설정 도구</h3>
-            
-            <!-- 회사 선택 -->
-            <div class="flex flex-col gap-2 text-[13px] mt-3">
-                <label class="font-bold text-slate-700 bg-slate-100 p-1.5 rounded text-center">🏢 발급 주체 선택</label>
-                <label class="flex items-center cursor-pointer hover:bg-blue-50 p-1.5 rounded border border-transparent hover:border-blue-100 transition">
-                    <input type="radio" name="companyType" value="jeongseon" checked onchange="changeCompany()" class="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500">
-                    (주)투어메이커
-                </label>
-                <label class="flex items-center cursor-pointer hover:bg-blue-50 p-1.5 rounded border border-transparent hover:border-blue-100 transition">
-                    <input type="radio" name="companyType" value="taebaek" onchange="changeCompany()" class="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500">
-                    투어메이커
-                </label>
-                <label class="flex items-center cursor-pointer hover:bg-orange-50 p-1.5 rounded border border-transparent hover:border-orange-100 transition">
-                    <input type="radio" name="companyType" value="jeju" onchange="changeCompany()" class="mr-2 h-4 w-4 text-orange-500 focus:ring-orange-500">
-                    <span class="text-orange-700 font-medium">(주)우리들여행</span>
-                </label>
-            </div>
-
-            <!-- 직인(도장) 설정 (노출/숨김 및 크기) -->
-            <div class="mt-4 text-[13px] bg-slate-50 p-3 rounded-lg border border-slate-100">
-                <div class="flex justify-between items-center mb-2">
-                    <label class="font-bold text-slate-700">🔴 직인(도장) 설정</label>
-                    <div class="flex gap-2 text-[12px]">
-                        <label class="flex items-center cursor-pointer hover:text-blue-600"><input type="radio" name="sealToggle" value="show" checked onchange="toggleSeal(this.value)" class="mr-1 accent-blue-600">노출</label>
-                        <label class="flex items-center cursor-pointer hover:text-blue-600"><input type="radio" name="sealToggle" value="hide" onchange="toggleSeal(this.value)" class="mr-1 accent-blue-600">숨김</label>
-                    </div>
-                </div>
-                <input type="range" id="sealSize" min="40" max="120" value="70" class="w-full accent-blue-600 mt-1" oninput="changeSealSize(this.value)">
-                <p class="text-[11px] text-slate-500 mt-2 text-center leading-tight">마우스로 도장을 직접 끌어당기거나<br>인쇄 전 숨김 처리할 수 있습니다.</p>
-            </div>
-
-            <div class="mt-5 pt-4 border-t border-slate-200 flex flex-col gap-2">
-                <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-md flex items-center justify-center transition w-full text-[14px]">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                    PDF 저장 / 인쇄하기
-                </button>
-                <button onclick="clearForm()" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2.5 px-4 rounded-lg shadow flex items-center justify-center transition w-full text-[13px]">
-                    입력 내용 전체 초기화
-                </button>
-            </div>
         </div>
 
     </div>
@@ -490,7 +535,7 @@
         // 기본 투어메이커 로고
         const tmLogo = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHfgIX70O5k6Anuo0UgALIdaG9jSga9auHu3uyz0uEirylGPAJnjN_qQbvEGMUvPqUQf_g9FMNUHRxlDcUBf4vZ3Mpy4TnA9WxbmzWYK11gt2zuy_Irl4wctNFjcjLyPo0GPXV792o_J7L9guRMuDfeC1gy7USwywjYbECZgzcsHybuGRRAXAnO1eNmP8/s320/logo.png";
         
-        // --- 발급주체 데이터 세팅 (이름 심플하게 변경) ---
+        // --- 발급주체 데이터 세팅 ---
         const companyData = {
             jeongseon: {
                 introName: "(주)투어메이커",
@@ -604,7 +649,7 @@
 
         function drag(e) {
             if (!isDragging) return;
-            e.preventDefault();
+            e.preventDefault(); // 터치 시 화면 스크롤 방지
             let currentX, currentY;
             if (e.type === 'touchmove') {
                 currentX = e.touches[0].clientX;
