@@ -535,7 +535,8 @@
             const selected = document.querySelector('input[name="companyType"]:checked').value;
             const data = companyData[selected];
             document.getElementById('txt-company-name-intro').innerText = data.introName;
-            document.getElementById('txt-footer-agency').innerText = data.introName;
+            const footerAgency = document.getElementById('txt-footer-agency');
+            if (footerAgency) footerAgency.innerText = data.introName;
             document.getElementById('txt-bank-name').innerText = data.bankName;
             document.getElementById('txt-bank-account').innerText = data.bankAccount;
             document.getElementById('txt-bank-holder').innerText = data.bankHolder;
@@ -582,7 +583,10 @@
 
         function changeSealSize(v) { seal.style.width = v + 'px'; }
         function toggleSeal(s) { seal.style.display = (s === 'hide') ? 'none' : 'block'; }
-        window.onload = () => document.querySelectorAll('textarea').forEach(autoResize);
+        window.onload = () => {
+            document.querySelectorAll('textarea').forEach(autoResize);
+            changeCompany();
+        };
     </script>
 </body>
 </html>
