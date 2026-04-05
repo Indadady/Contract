@@ -123,24 +123,56 @@
             text-align: center;
         }
 
-        .payment-option-wrap {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            text-[12px]: inherit;
-        }
-
         .legal-note {
             margin-top: 1rem;
             padding-top: 0.4rem;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
             text-align: left;
         }
 
-        .legal-note p {
+        .legal-note-text {
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+
+        .legal-note-text p {
             font-size: 10.5px;
             color: #94a3b8;
             line-height: 1.45;
             margin: 0;
+            white-space: normal;
+        }
+
+        .legal-note-powered {
+            flex: 0 0 auto;
+            font-size: 10.5px;
+            color: #94a3b8;
+            line-height: 1.45;
+            text-align: right;
+            white-space: nowrap;
+            padding-top: 0.05rem;
+        }
+
+        .system-watermark {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .system-watermark span {
+            font-size: 44px;
+            font-weight: 800;
+            letter-spacing: 0.18em;
+            color: rgba(15, 23, 42, 0.05);
+            transform: rotate(-28deg);
+            user-select: none;
             white-space: nowrap;
         }
 
@@ -170,10 +202,18 @@
                 white-space: nowrap;
                 overflow: visible;
             }
+            .legal-note {
+                display: block;
+            }
+            .legal-note-powered {
+                margin-top: 0.2rem;
+                text-align: left;
+                white-space: normal;
+            }
         }
 
         @media print {
-            @page { size: A4; margin: 6mm 10mm 7mm; }
+            @page { size: A4; margin: 8mm 10mm 10mm; }
             body { 
                 background-color: white !important; 
                 margin: 0; padding: 0; 
@@ -211,11 +251,14 @@
             p { font-size: 0.88rem !important; line-height: 1.5 !important; }
             .hidden.print\:block { display: block !important; }
             #seal-image { border: none !important; mix-blend-mode: multiply !important; }
-            .legal-note p { font-size: 10px !important; line-height: 1.35 !important; color: #64748b !important; white-space: nowrap !important; }
+            .legal-note-text p { font-size: 10px !important; line-height: 1.4 !important; color: #64748b !important; white-space: normal !important; }
+            .legal-note-powered { font-size: 10px !important; line-height: 1.4 !important; color: #64748b !important; white-space: nowrap !important; }
+            .system-watermark { display: flex !important; }
         }
     </style>
 </head>
 <body class="font-sans text-gray-900 overflow-x-hidden">
+    <div class="system-watermark"><span>TOURMAKER SYSTEM</span></div>
 
     <div class="max-w-[1300px] mx-auto py-4 sm:py-8 px-4 flex flex-col lg:flex-row gap-6 lg:gap-8 items-start justify-center relative">
         
@@ -434,19 +477,15 @@
             </div>
 
             <div class="legal-note">
-                <p>본 계약서는 [관광진흥법] 및 [소비자 분쟁해결기준]에 근거하여 작성된 표준 양식입니다.</p>
-                <p>자세한 여행 약관 및 일정은 별도로 교부된 자료(견적서, 상세일정표)를 참조하시기 바랍니다.</p>
+                <div class="legal-note-text">
+                    <p>본 계약서는 [관광진흥법] 및 [소비자 분쟁해결기준]에 근거하여 작성된 표준 양식입니다.</p>
+                    <p>자세한 일정은 별도로 교부된 상세일정표를 참조하시기 바랍니다.</p>
+                </div>
+                <div class="legal-note-powered">[System Powered by <a href="https://tourmaker.kr" target="_blank" style="color: inherit; text-decoration: underline; font-weight: 700;">TOURMAKER</a>]</div>
             </div>
             
-            <div class="mt-4 text-center pt-2 pb-6 no-print">
-                <div style="background-color: #f8f9fa; padding: 10px; border-radius: 4px;">
-                    <p style="font-size: 12px; color: #6c757d; text-align: center; margin: 0; font-family: 'Noto Sans KR', sans-serif;">
-                        [System Powered by <a href="https://tourmaker.kr" target="_blank" style="color: #6c757d; font-weight: bold; text-decoration: underline;">TOURMAKER</a>] 
-                        본 스마트 전자계약서는 <strong id="txt-footer-agency">(주)투어메이커</strong>의 기획과 기술 제휴로 제작되었습니다.
-                    </p>
-                </div>
             </div>
-        </div>
+    </div>
     </div>
 
     <script>
