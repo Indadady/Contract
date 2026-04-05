@@ -59,11 +59,8 @@
             box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
         }
         
-        /* 자동 및 수동 높이 조절을 위한 textarea 스타일 강화 */
         textarea {
-            resize: vertical; /* 마우스로 우측 하단을 드래그하여 수동으로 높이 조절 가능하도록 허용 */
-            overflow-y: hidden; /* 텍스트 입력 시 지저분한 스크롤바 숨김 처리 */
-            min-height: 42px;
+            resize: vertical; /* 수동 높이 조절(우측 하단 드래그) 완벽 허용 */
         }
 
         /* 투명 인풋 커스텀 (금액 한줄 정렬용) */
@@ -522,8 +519,8 @@
         }
 
         function autoResize(textarea) {
-            // 글자를 지울 때도 칸이 맞게 줄어들도록 1px로 초기화 후 실제 내용 높이(scrollHeight) 재계산
-            textarea.style.height = '1px';
+            // 수동 조절(드래그)과 자동 조절(타이핑)이 충돌하지 않도록 가장 안정적이었던 원본 방식으로 복원
+            textarea.style.height = 'auto';
             textarea.style.height = textarea.scrollHeight + 'px';
         }
 
@@ -655,14 +652,11 @@
             seal.style.display = state === 'hide' ? 'none' : 'block';
         }
         
-        // 초기 로딩 시 textarea 높이 조절 세팅 (환경에 상관없이 무조건 작동하도록 안정성 강화)
-        document.addEventListener("DOMContentLoaded", function() {
+        // 초기 로딩 시 textarea 높이 조절 세팅
+        window.onload = function() {
             document.querySelectorAll('textarea').forEach(function(el) {
                 autoResize(el);
             });
-        });
-        window.onload = function() {
-            document.querySelectorAll('textarea').forEach(autoResize);
         }
     </script>
 </body>
