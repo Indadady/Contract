@@ -110,11 +110,24 @@
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
+            width: 100%;
         }
 
         .trip-date-wrap input[type="date"] {
             width: 9.1rem;
             text-align: center;
+            margin: 0 auto;
+        }
+
+        .trip-meta-center {
+            text-align: center;
+        }
+
+        .payment-option-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-[12px]: inherit;
         }
 
         .legal-note {
@@ -280,7 +293,7 @@
                 <tbody>
                     <tr>
                         <th>여행 상품명</th>
-                        <td colspan="3"><input type="text" placeholder="예: 2026년 00기관 우수직원 해외 연수"></td>
+                        <td colspan="3"><input type="text" placeholder="예: 2026년 00기관 우수직원 해외 연수" class="trip-meta-center"></td>
                     </tr>
                     <tr>
                         <th>여행 기간</th>
@@ -292,13 +305,13 @@
                             </div>
                         </td>
                         <th>여행 지역</th>
-                        <td><input type="text" placeholder="예: 싱가포르 등"></td>
+                        <td><input type="text" placeholder="예: 싱가포르 등" class="trip-meta-center"></td>
                     </tr>
                     <tr>
                         <th>여행 인원</th>
-                        <td><input type="text" placeholder="예: 성인 34명"></td>
+                        <td><input type="text" placeholder="예: 성인 34명" class="trip-meta-center"></td>
                         <th>교통 수단</th>
-                        <td><input type="text" placeholder="예: 대한항공 등"></td>
+                        <td><input type="text" placeholder="예: 대한항공 등" class="trip-meta-center"></td>
                     </tr>
                 </tbody>
             </table>
@@ -308,8 +321,8 @@
                     <span class="w-1 h-4 bg-blue-600 inline-block mr-2 print:bg-slate-800"></span> 2. 여행 요금 및 결제
                 </h2>
                 <div class="flex items-center gap-3 text-[12px] font-medium bg-slate-100 px-3 py-1.5 rounded text-slate-600">
-                    <label class="flex items-center cursor-pointer"><input type="radio" name="vatType" value="총액" checked class="mr-1.5">총액(VAT포함)</label>
-                    <label class="flex items-center cursor-pointer"><input type="radio" name="vatType" value="순액" class="mr-1.5">순액(VAT별도)</label>
+                    <label class="flex items-center cursor-pointer"><input type="radio" name="vatType" value="순액" checked class="mr-1.5">순액(VAT별도)</label>
+                    <label class="flex items-center cursor-pointer"><input type="radio" name="vatType" value="총액" class="mr-1.5">총액(VAT포함)</label>
                 </div>
             </div>
             <table>
@@ -327,7 +340,7 @@
                         <td class="text-center align-middle bg-blue-50/20 print:bg-transparent py-4 print:py-2">
                             <div class="flex items-center justify-center border-b-2 border-blue-300 print:border-none pb-1 w-[88%] mx-auto overflow-hidden">
                                 <span class="font-bold text-blue-700 print:text-black mr-1 text-[20px] print:text-[1.2rem] pt-1 shrink-0">₩</span>
-                                <input type="text" id="num-amount" oninput="formatNumberInput(this); calculateBalance();" placeholder="25,000,000" class="transparent-input !border-none !bg-transparent !p-0 !m-0 !shadow-none outline-none w-full min-w-0 text-center font-black text-[34px] print:text-[1.65rem] h-10 tracking-[-0.03em] text-blue-700 print:text-black">
+                                <input type="text" id="num-amount" oninput="formatNumberInput(this); calculateBalance();" placeholder="25,000,000" class="transparent-input !border-none !bg-transparent !p-0 !m-0 !shadow-none outline-none w-full min-w-0 text-center font-black text-[35px] print:text-[1.65rem] h-10 tracking-[-0.03em] text-blue-700 print:text-black">
                             </div>
                         </td>
                         <th>계약금</th>
@@ -352,7 +365,7 @@
                     <tr>
                         <th class="bg-blue-50/50 print:bg-slate-100">입금 계좌</th>
                         <td colspan="5" class="bg-blue-50/10 print:bg-white">
-                            <div class="flex items-center font-bold text-[13px] print:text-[0.95rem]">
+                            <div class="flex items-center justify-center font-bold text-[13px] print:text-[0.95rem] text-center">
                                 <span id="txt-bank-name" class="mr-3 text-slate-700">신협</span>
                                 <span id="txt-bank-account" class="mr-4 text-blue-600 print:text-black text-[18px] print:text-[1.1rem] tracking-wider font-extrabold">131-022-382094</span>
                                 <span class="text-slate-800">예금주 : <span id="txt-bank-holder">(주)투어메이커</span></span>
