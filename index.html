@@ -4,19 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- 카카오톡 공유 썸네일 (Open Graph) - 요청하신 3가지 중 랜덤 적용 -->
+    <!-- 🌟 카카오톡 공유 썸네일 (행정 서류/계약서: 공식 로고 고정 탑재 규칙 적용) -->
     <meta property="og:title" content="표준 여행계약서">
     <meta property="og:description" content="쉽고 빠른 맞춤형 스마트 전자계약 시스템">
-    <meta property="og:image" content="https://blogger.googleusercontent.com/img/a/AVvXsEjQVWjqNlaxb98AP-qG4LHAIN9gK9sn4cGowBArA_-DUz0rxQycXrr3vFhvUqMM9Pa5tP2cDBxqBzW_re-HqzVLVAngEO8FAORbaQ36ANr0BULZ_q2PBFdDbEUJhQqr7LCGGuXO1snQ-bYx5SdFP1GZllmKNTxYv66H8E7zYyvQLsq3jour2LNjQ4PyAbo">
+    <meta property="og:image" content="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHfgIX70O5k6Anuo0UgALIdaG9jSga9auHu3uyz0uEirylGPAJnjN_qQbvEGMUvPqUQf_g9FMNUHRxlDcUBf4vZ3Mpy4TnA9WxbmzWYK11gt2zuy_Irl4wctNFjcjLyPo0GPXV792o_J7L9guRMuDfeC1gy7USwywjYbECZgzcsHybuGRRAXAnO1eNmP8/s320/logo.png">
     <meta property="og:type" content="website">
 
     <title>투어메이커 - 표준 여행계약서</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
     
-    <!-- Google Analytics 4 (투어메이커 기본 GA4) -->
+    <!-- 🚨 Google Analytics 4 (투어메이커 고정 GA4) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-JLH9GD9SVR"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -58,6 +59,13 @@
             box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
         }
         
+        /* 투명 인풋 커스텀 (금액 한줄 정렬용) */
+        .transparent-input:focus {
+            background-color: #f1f5f9 !important;
+            border-radius: 4px;
+            box-shadow: none !important;
+        }
+
         /* 테이블 기본 세팅 */
         table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; table-layout: fixed; }
         th, td { border: 1px solid #cbd5e1; padding: 0.5rem 0.6rem; vertical-align: middle; }
@@ -117,7 +125,6 @@
            [인쇄 품질 최적화] - A4 꽉 차는 시각적 무게감 증대 비율
         ========================================================= */
         @media print {
-            /* 여백 최소화로 내부 콘텐츠 비중 확대 (맥락적 적응력 상승) */
             @page { size: A4; margin: 12mm 10mm; } 
             
             body { 
@@ -131,7 +138,7 @@
             /* 불필요한 요소 숨김 */
             .no-print, .control-panel { display: none !important; }
             
-            /* 메인 컨테이너 그림자 및 여백 제거 */
+            /* 메인 컨테이너 여백 제거 */
             .print-container {
                 box-shadow: none !important;
                 margin: 0 !important;
@@ -151,12 +158,10 @@
                 overflow: visible !important;
             }
             
-            /* 플레이스홀더 인쇄 안 되게 */
-            input::placeholder, textarea::placeholder {
-                color: transparent !important; 
-            }
+            /* 플레이스홀더 인쇄 방지 */
+            input::placeholder, textarea::placeholder { color: transparent !important; }
             
-            /* 테이블 강제 고정 및 폰트/패딩 비율 확대 (안전감 향상) */
+            /* 테이블 강제 고정 */
             table { 
                 display: table !important; 
                 width: 100% !important; 
@@ -173,8 +178,8 @@
             th, td { 
                 display: table-cell !important; 
                 border: 1px solid #94a3b8 !important; 
-                padding: 0.45rem 0.55rem !important; /* 공간 확보에 따른 패딩 증가 */
-                font-size: 0.9rem !important; /* 0.85 -> 0.9 폰트 크기 확대 */
+                padding: 0.45rem 0.55rem !important;
+                font-size: 0.9rem !important;
                 line-height: 1.4 !important;
             }
             th { 
@@ -182,12 +187,11 @@
                 text-align: center !important; 
             }
 
-            /* 텍스트 크기 시각적 무게감 배분 */
             h1 { font-size: 1.7rem !important; margin-bottom: 0.2rem !important; letter-spacing: -0.025em !important; }
             h2 { font-size: 1.05rem !important; margin-top: 1.5rem !important; margin-bottom: 0.5rem !important; }
             p { font-size: 0.9rem !important; line-height: 1.6 !important; }
             
-            /* 인쇄 시 레이아웃 강제 유지 (tailwind 클래스 무력화 방지) */
+            /* 인쇄 시 레이아웃 강제 유지 */
             .sm\:flex-row { flex-direction: row !important; }
             .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; display: grid !important; }
             .hidden.print\:block { display: block !important; }
@@ -203,7 +207,7 @@
     <div class="max-w-[1300px] mx-auto py-4 sm:py-8 px-4 flex flex-col lg:flex-row gap-6 lg:gap-8 items-start justify-center relative">
         
         <!-- 우측 컨트롤 패널 (인쇄 시 숨김) -->
-        <div class="w-full lg:w-72 sticky top-4 lg:top-8 no-print control-panel p-5 rounded-xl shadow-lg shrink-0 order-first lg:order-last z-50 bg-white">
+        <div class="w-full lg:w-72 sticky top-4 lg:top-8 no-print control-panel p-5 rounded-xl shadow-lg shrink-0 order-first lg:order-last z-50 bg-white border border-slate-200">
             <h3 class="font-bold text-slate-800 text-[15px] mb-2 border-b border-slate-200 pb-2 flex justify-between items-center">
                 계약서 설정 도구
                 <span class="lg:hidden text-[11px] text-blue-500 font-normal">▼ 아래로 스크롤</span>
@@ -241,17 +245,16 @@
 
             <div class="mt-5 pt-4 border-t border-slate-200 flex flex-col gap-2">
                 <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-md flex items-center justify-center transition w-full text-[14px]">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                    PDF 저장 / 인쇄하기
+                    <i class="fa-solid fa-print mr-2"></i> PDF 저장 / 인쇄하기
                 </button>
                 <button onclick="clearForm()" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2.5 px-4 rounded-lg shadow flex items-center justify-center transition w-full text-[13px]">
-                    입력 내용 전체 초기화
+                    <i class="fa-solid fa-rotate-right mr-2"></i> 입력 내용 전체 초기화
                 </button>
             </div>
         </div>
 
         <!-- 메인 계약서 영역 -->
-        <div class="print-container bg-white w-full lg:w-[21cm] px-6 py-10 shadow-xl box-border mx-auto lg:mx-0 rounded-lg lg:rounded-none">
+        <div class="print-container bg-white w-full lg:w-[21cm] px-6 py-10 shadow-xl box-border mx-auto lg:mx-0 rounded-lg lg:rounded-none border border-slate-200">
             
             <!-- 헤더 / 로고 -->
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end border-b-2 border-slate-800 pb-3 mb-5 gap-4 sm:gap-0">
@@ -317,7 +320,7 @@
                 </tbody>
             </table>
 
-            <!-- 2. 여행 요금 및 결제 -->
+            <!-- 2. 여행 요금 및 결제 (⭐ 6열 한줄 통합 개선 & 금액 폰트 확대) -->
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-2 mt-6 gap-3 sm:gap-0">
                 <h2 class="text-md font-bold flex items-center text-slate-800 m-0">
                     <span class="w-1 h-4 bg-blue-600 inline-block mr-2 print:bg-slate-800"></span> 2. 여행 요금 및 결제
@@ -333,55 +336,48 @@
             </div>
             <table>
                 <colgroup>
-                    <col style="width: 15%;">
-                    <col style="width: 25%;">
-                    <col style="width: 15%;">
-                    <col style="width: 45%;">
+                    <col style="width: 14%;">
+                    <col style="width: 28%;">
+                    <col style="width: 11%;">
+                    <col style="width: 17%;">
+                    <col style="width: 11%;">
+                    <col style="width: 19%;">
                 </colgroup>
                 <tbody>
                     <tr>
                         <th>총 계약 금액</th>
-                        <td colspan="3">
-                            <div class="flex items-center w-full gap-2">
-                                <span class="font-bold text-blue-700 print:text-black text-[20px] print:text-[1.2rem]">₩</span>
-                                <input type="text" id="num-amount" oninput="formatAmount(this); calculateBalance();" placeholder="15,000,000" class="w-48 font-bold text-[20px] print:text-[1.2rem] text-blue-700 print:text-black">
-                                
-                                <div class="flex items-center bg-slate-50 border border-slate-200 rounded px-2 py-1 print:border-none print:bg-transparent ml-4">
-                                    <span class="text-[12px] print:text-[0.9rem] text-slate-600">(일금:</span>
-                                    <input type="text" id="korean-amount" placeholder="천오백만" class="w-32 text-[13px] print:text-[0.95rem] font-bold text-center bg-transparent border-none text-slate-800 pointer-events-none" readonly tabindex="-1">
-                                    <span class="text-[12px] print:text-[0.9rem] text-slate-600">원정)</span>
-                                </div>
+                        <!-- 총 계약금액 셀 패딩과 폰트 크기 대폭 확대 -->
+                        <td class="text-center align-middle bg-blue-50/20 print:bg-transparent py-3 print:py-2">
+                            <div class="flex items-center justify-center border-b-2 border-blue-300 print:border-slate-400 pb-1 w-[95%] mx-auto">
+                                <span class="font-bold text-blue-700 print:text-black mr-1 text-[18px] print:text-[1.2rem]">₩</span>
+                                <input type="text" id="num-amount" oninput="formatNumberInput(this); calculateBalance();" placeholder="25,000,000" class="transparent-input !border-none !bg-transparent !p-0 !m-0 !shadow-none outline-none w-full text-center font-black text-[24px] print:text-[1.5rem] tracking-wide text-blue-700 print:text-black">
                             </div>
                         </td>
-                    </tr>
-                    <tr>
                         <th>계약금</th>
-                        <td>
-                            <div class="flex items-center">
-                                <span class="font-bold text-slate-700 mr-1">₩</span>
-                                <input type="text" id="deposit-amount" placeholder="1,500,000" oninput="formatNumberInput(this); calculateBalance();" class="w-full font-bold">
+                        <td class="text-center align-middle">
+                            <div class="flex items-center justify-center border-b border-slate-200 pb-1 print:border-slate-300 w-[90%] mx-auto mt-1">
+                                <span class="font-bold text-slate-700 mr-1 text-[15px] print:text-[1.05rem]">₩</span>
+                                <input type="text" id="deposit-amount" placeholder="1,500,000" oninput="formatNumberInput(this); calculateBalance();" class="transparent-input !border-none !bg-transparent !p-0 !m-0 !shadow-none outline-none w-full text-center font-bold text-[16px] print:text-[1.1rem] tracking-wide text-slate-800">
                             </div>
                         </td>
                         <th>잔금</th>
-                        <td>
-                            <div class="flex items-center justify-between gap-2">
-                                <div class="flex items-center flex-1">
-                                    <span class="font-bold text-slate-700 mr-1">₩</span>
-                                    <input type="text" id="balance-amount" placeholder="13,500,000" oninput="formatNumberInput(this)" class="w-full font-bold">
-                                </div>
-                                <div class="flex items-center text-[12px] text-slate-600">
-                                    <span class="mr-1 print:text-[0.85rem]">기한:</span>
-                                    <input type="date" class="w-28 print:w-32 p-0 border-b border-slate-300 bg-transparent rounded-none print:text-[0.85rem]">
-                                </div>
+                        <td class="text-center align-middle">
+                            <div class="flex items-center justify-center border-b border-slate-200 pb-1 print:border-slate-300 w-[90%] mx-auto mt-1">
+                                <span class="font-bold text-slate-700 mr-1 text-[15px] print:text-[1.05rem]">₩</span>
+                                <input type="text" id="balance-amount" placeholder="23,500,000" oninput="formatNumberInput(this)" class="transparent-input !border-none !bg-transparent !p-0 !m-0 !shadow-none outline-none w-full text-center font-bold text-[16px] print:text-[1.1rem] tracking-wide text-slate-800">
+                            </div>
+                            <div class="flex items-center justify-center mt-1.5 text-[11px] print:text-[0.8rem] text-slate-500 w-[90%] mx-auto gap-1">
+                                <span class="whitespace-nowrap mr-1 font-bold">기한:</span>
+                                <input type="date" class="transparent-input !border-none !bg-transparent !p-0 !m-0 !shadow-none outline-none w-full text-center text-slate-700">
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <th class="bg-blue-50/50 print:bg-slate-100">입금 계좌</th>
-                        <td colspan="3" class="bg-blue-50/20 print:bg-white">
+                        <td colspan="5" class="bg-blue-50/10 print:bg-white">
                             <div class="flex items-center font-bold text-[13px] print:text-[0.95rem]">
                                 <span id="txt-bank-name" class="mr-3 text-slate-700">신협</span>
-                                <span id="txt-bank-account" class="mr-4 text-blue-600 print:text-black text-[15px] print:text-[1rem] tracking-wider">131-022-382094</span>
+                                <span id="txt-bank-account" class="mr-4 text-blue-600 print:text-black text-[16px] print:text-[1.05rem] tracking-wider">131-022-382094</span>
                                 <span class="text-slate-800">예금주 : <span id="txt-bank-holder">(주)투어메이커</span></span>
                             </div>
                         </td>
@@ -418,12 +414,10 @@
 
             <!-- 서명란 -->
             <div class="mt-8 pt-5 border-t-2 border-slate-800">
-                
                 <div class="flex justify-between items-end mb-4 px-1">
                     <h2 class="text-md font-bold flex items-center text-slate-800 m-0">
                         <span class="w-1 h-4 bg-blue-600 inline-block mr-2 print:bg-slate-800"></span> 4. 계약자 서명
                     </h2>
-                    <!-- 계약체결일 한 줄 고정 (whitespace-nowrap, shrink-0 추가) -->
                     <div class="flex items-center text-[13px] print:text-[0.95rem] font-bold text-slate-800 shrink-0 whitespace-nowrap">
                         계약체결일 : <input type="text" placeholder="2026년 04월 03일" class="w-28 sm:w-32 text-center bg-transparent border-b border-slate-400 font-bold ml-2 rounded-none p-1 text-[13px] print:text-[0.95rem]">
                     </div>
@@ -431,7 +425,7 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- 여행사 측 -->
-                    <div class="border border-slate-300 rounded-lg p-5 bg-slate-50/50 print:bg-white signature-box">
+                    <div class="border border-slate-300 rounded-lg p-5 bg-slate-50/50 print:bg-white signature-box shadow-sm print:shadow-none">
                         <h3 class="font-bold text-center text-slate-800 mb-3 pb-2 border-b border-slate-200 text-[14px] print:text-[1rem]">여행업자 (여행사)</h3>
                         <div class="space-y-2 text-[12px] print:text-[0.9rem]">
                             <div class="flex"><span class="w-16 print:w-14 font-semibold text-slate-600 shrink-0">상호명</span> <span id="info-company" class="font-bold text-slate-900">(주)투어메이커</span></div>
@@ -446,7 +440,7 @@
                     </div>
 
                     <!-- 여행자 측 -->
-                    <div class="border border-slate-300 rounded-lg p-5 print:bg-white">
+                    <div class="border border-slate-300 rounded-lg p-5 print:bg-white shadow-sm print:shadow-none">
                         <h3 class="font-bold text-center text-slate-800 mb-3 pb-2 border-b border-slate-200 text-[14px] print:text-[1rem]">여행자 (또는 대표기관)</h3>
                         <div class="space-y-4 text-[12px] print:text-[0.9rem] px-1">
                             <div class="flex items-center gap-2">
@@ -467,16 +461,53 @@
                 </div>
             </div>
 
-            <!-- 투어메이커 트래블테크 제휴 푸터 영역 -->
+            <!-- 하단 안내 문구 -->
             <div class="mt-8 text-center pt-4">
                 <p class="text-[11px] print:text-[0.85rem] text-slate-400 mb-3">
                     본 계약서는 [관광진흥법] 및 [소비자 분쟁해결기준]에 근거하여 작성된 표준 양식입니다. <br>
-                    자세한 여행 약관 및 일정은 별도로 교부된 자료(스마트 가이드북, 견적서, 상세일정표)를 참조하시기 바랍니다.
+                    자세한 여행 약관 및 일정은 별도로 교부된 자료(견적서, 상세일정표)를 참조하시기 바랍니다.
                 </p>
-                <div style="background-color: #f8f9fa; padding: 10px; border-radius: 4px; margin-top: 10px;">
+            </div>
+            
+            <!-- ───────────── ESG DASHBOARD (공공기관 보고용) ───────────── -->
+            <div class="mt-8 pt-6 border-t border-slate-200 no-print">
+                <div class="text-center">
+                    <h2 class="text-[15px] font-bold text-emerald-700 mb-4"><i class="fa-solid fa-leaf"></i> ESG 실천 성과 (디지털 전환)</h2>
+                    <div class="flex flex-wrap justify-center gap-3 mb-4 max-w-2xl mx-auto">
+                        <div class="bg-emerald-50 px-4 py-3 rounded-lg border border-emerald-100 flex-1 min-w-[120px]">
+                            <div class="text-emerald-500 text-lg mb-1"><i class="fa-solid fa-file-excel"></i></div>
+                            <div class="text-[11px] text-slate-500 font-bold">종이 절감</div>
+                            <div class="text-lg font-black text-slate-800">8장 <span class="text-[10px] font-normal">/ 1인</span></div>
+                        </div>
+                        <div class="bg-emerald-50 px-4 py-3 rounded-lg border border-emerald-100 flex-1 min-w-[120px]">
+                            <div class="text-emerald-500 text-lg mb-1"><i class="fa-solid fa-cloud-meatball"></i></div>
+                            <div class="text-[11px] text-slate-500 font-bold">탄소 배출 감소</div>
+                            <div class="text-lg font-black text-slate-800">38g <span class="text-[10px] font-normal">/ 1인</span></div>
+                        </div>
+                        <div class="bg-emerald-50 px-4 py-3 rounded-lg border border-emerald-100 flex-1 min-w-[120px]">
+                            <div class="text-emerald-500 text-lg mb-1"><i class="fa-solid fa-droplet"></i></div>
+                            <div class="text-[11px] text-slate-500 font-bold">물 절약</div>
+                            <div class="text-lg font-black text-slate-800">75L <span class="text-[10px] font-normal">/ 1인</span></div>
+                        </div>
+                    </div>
+                    <p class="text-[12px] text-emerald-700 font-medium max-w-xl mx-auto bg-emerald-50 p-3 rounded-lg break-keep">
+                        "본 행사는 스마트 전자계약 시스템 도입을 통해 참여 인원 비례 약 <strong>3그루</strong>의 나무를 심는 효과를 거두었으며, 디지털 전환(DX)을 통한 공공부문 에너지 절약 실천의 모범 사례입니다."
+                    </p>
+                </div>
+            </div>
+
+            <!-- ───────────── TOURMAKER FOOTER (필수 규격) ───────────── -->
+            <div class="mt-6 text-center pt-2 pb-6 no-print">
+                <a href="https://tourmaker.kr" target="_blank" class="inline-block bg-white border border-slate-300 rounded-xl px-5 py-2.5 hover:shadow-md transition-shadow mb-4">
+                    <div class="flex items-center gap-2">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHfgIX70O5k6Anuo0UgALIdaG9jSga9auHu3uyz0uEirylGPAJnjN_qQbvEGMUvPqUQf_g9FMNUHRxlDcUBf4vZ3Mpy4TnA9WxbmzWYK11gt2zuy_Irl4wctNFjcjLyPo0GPXV792o_J7L9guRMuDfeC1gy7USwywjYbECZgzcsHybuGRRAXAnO1eNmP8/s320/logo.png" alt="Tourmaker" class="h-5">
+                        <span class="text-[13px] font-bold text-slate-700">홈페이지 바로가기 <i class="fa-solid fa-chevron-right text-[10px]"></i></span>
+                    </div>
+                </a>
+                <div style="background-color: #f8f9fa; padding: 10px; border-radius: 4px;">
                     <p style="font-size: 12px; color: #6c757d; text-align: center; margin: 0; font-family: 'Noto Sans KR', sans-serif;">
                         [System Powered by <a href="https://tourmaker.kr" target="_blank" style="color: #6c757d; font-weight: bold; text-decoration: underline;">TOURMAKER</a>] 
-                        본 스마트 가이드북은 <strong id="txt-footer-agency">(주)투어메이커</strong>의 기획과 투어메이커의 트래블 테크 기술 제휴로 제작되었습니다.
+                        본 스마트 전자계약서는 <strong id="txt-footer-agency">(주)투어메이커</strong>의 기획과 투어메이커의 트래블 테크 기술 제휴로 제작되었습니다.
                     </p>
                 </div>
             </div>
@@ -485,47 +516,6 @@
     </div>
 
     <script>
-        // --- 금액 숫자 -> 한글 자동 변환 로직 ---
-        function numToKorean(numStr) {
-            const digits = ['','일','이','삼','사','오','육','칠','팔','구'];
-            const units = ['','십','백','천'];
-            const manUnits = ['','만 ','억 ','조 '];
-            
-            let result = '';
-            let manIdx = 0;
-            
-            for(let i = numStr.length; i > 0; i -= 4) {
-                let chunk = numStr.substring(Math.max(i - 4, 0), i);
-                let chunkStr = '';
-                
-                for(let j = 0; j < chunk.length; j++) {
-                    let digit = parseInt(chunk[j]);
-                    let unitIdx = chunk.length - 1 - j;
-                    if(digit > 0) {
-                        let digitStr = digits[digit];
-                        if (digit === 1 && unitIdx > 0) digitStr = ''; 
-                        chunkStr += digitStr + units[unitIdx];
-                    }
-                }
-                if(chunkStr !== '') {
-                    result = chunkStr + manUnits[manIdx] + result;
-                }
-                manIdx++;
-            }
-            return result.trim();
-        }
-
-        function formatAmount(input) {
-            let val = input.value.replace(/[^0-9]/g, '');
-            if (!val) {
-                input.value = '';
-                document.getElementById('korean-amount').value = '';
-                return;
-            }
-            input.value = Number(val).toLocaleString('ko-KR');
-            document.getElementById('korean-amount').value = numToKorean(val);
-        }
-
         function formatNumberInput(input) {
             let val = input.value.replace(/[^0-9]/g, '');
             if (!val) {
@@ -608,12 +598,11 @@
 
         function clearForm() {
             if(confirm("입력한 모든 내용을 초기화하시겠습니까?")) {
-                const inputs = document.querySelectorAll('input[type="text"]:not(#info-phone):not(#info-email):not(#korean-amount), input[type="date"], input[type="number"], textarea');
+                const inputs = document.querySelectorAll('input[type="text"]:not(#info-phone):not(#info-email), input[type="date"], input[type="number"], textarea');
                 inputs.forEach(input => {
                     input.value = '';
                     if(input.tagName.toLowerCase() === 'textarea') input.style.height = 'auto';
                 });
-                document.getElementById('korean-amount').value = '';
             }
         }
 
