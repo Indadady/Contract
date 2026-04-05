@@ -59,6 +59,13 @@
             box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
         }
         
+        /* 자동 및 수동 높이 조절을 위한 textarea 스타일 강화 */
+        textarea {
+            resize: vertical; /* 마우스로 우측 하단을 드래그하여 수동으로 높이 조절 가능하도록 허용 */
+            overflow-y: hidden; /* 텍스트 입력 시 지저분한 스크롤바 숨김 처리 */
+            min-height: 42px;
+        }
+
         /* 투명 인풋 커스텀 (금액 한줄 정렬용) */
         .transparent-input:focus {
             background-color: #f1f5f9 !important;
@@ -122,7 +129,7 @@
         }
 
         /* =========================================================
-           [인쇄 품질 최적화] - A4 꽉 차는 시각적 무게감 증대 비율
+           [인쇄 품질 최적화] - 잔여 외곽선 완벽 제거
         ========================================================= */
         @media print {
             @page { size: A4; margin: 12mm 10mm; } 
@@ -138,8 +145,9 @@
             /* 불필요한 요소 숨김 */
             .no-print, .control-panel { display: none !important; }
             
-            /* 메인 컨테이너 여백 제거 */
+            /* 100% 반영: 메인 컨테이너 외곽선 및 여백 완벽 제거 */
             .print-container {
+                border: none !important;
                 box-shadow: none !important;
                 margin: 0 !important;
                 padding: 0 !important;
@@ -200,7 +208,9 @@
             
             /* 인쇄 시 레이아웃 강제 유지 */
             .sm\:flex-row { flex-direction: row !important; }
-            .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; display: grid !important; }
+            .md\:flex-row { flex-direction: row !important; }
+            .md\:w-7\/12 { width: 58.333333% !important; }
+            .md\:w-5\/12 { width: 41.666667% !important; }
             .hidden.print\:block { display: block !important; }
             
             /* 도장 이미지 */
@@ -320,14 +330,11 @@
                         <th>교통 수단</th>
                         <td><input type="text" placeholder="예: 대한항공 등"></td>
                     </tr>
-                    <tr>
-                        <th>숙박 시설</th>
-                        <td colspan="3"><input type="text" placeholder="예: 마리나 베이 샌즈 (5성급) 또는 동급 (상세 일정표 참조)"></td>
-                    </tr>
+                    <!-- 100% 반영: 숙박시설 행(tr) 완벽 삭제 완료 -->
                 </tbody>
             </table>
 
-            <!-- 2. 여행 요금 및 결제 (⭐ 6열 한줄 통합 개선 & 금액 폰트 확대) -->
+            <!-- 2. 여행 요금 및 결제 -->
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-2 mt-6 gap-3 sm:gap-0">
                 <h2 class="text-md font-bold flex items-center text-slate-800 m-0">
                     <span class="w-1 h-4 bg-blue-600 inline-block mr-2 print:bg-slate-800"></span> 2. 여행 요금 및 결제
@@ -344,11 +351,11 @@
             <table>
                 <colgroup>
                     <col style="width: 14%;">
-                    <col style="width: 28%;">
+                    <col style="width: 22%;">
                     <col style="width: 11%;">
-                    <col style="width: 17%;">
+                    <col style="width: 21%;">
                     <col style="width: 11%;">
-                    <col style="width: 19%;">
+                    <col style="width: 21%;">
                 </colgroup>
                 <tbody>
                     <tr>
@@ -356,8 +363,8 @@
                         <!-- 총 계약금액 셀 패딩과 폰트 크기 대폭 확대 -->
                         <td class="text-center align-middle bg-blue-50/20 print:bg-transparent py-3 print:py-2">
                             <div class="flex items-center justify-center border-b-2 border-blue-300 print:border-none pb-1 w-[95%] mx-auto">
-                                <span class="font-bold text-blue-700 print:text-black mr-1 text-[18px] print:text-[1.2rem]">₩</span>
-                                <input type="text" id="num-amount" oninput="formatNumberInput(this); calculateBalance();" placeholder="25,000,000" class="transparent-input !border-none !bg-transparent !p-0 !m-0 !shadow-none outline-none w-full text-center font-black text-[24px] print:text-[1.5rem] tracking-wide text-blue-700 print:text-black">
+                                <span class="font-bold text-blue-700 print:text-black mr-1 text-[20px] print:text-[1.4rem]">₩</span>
+                                <input type="text" id="num-amount" oninput="formatNumberInput(this); calculateBalance();" placeholder="25,000,000" class="transparent-input !border-none !bg-transparent !p-0 !m-0 !shadow-none outline-none w-full text-center font-black text-[30px] print:text-[1.8rem] tracking-wide text-blue-700 print:text-black">
                             </div>
                         </td>
                         <th>계약금</th>
@@ -419,7 +426,7 @@
                 </tbody>
             </table>
 
-            <!-- 서명란 -->
+            <!-- 4. 서명란 -->
             <div class="mt-8 pt-5 border-t-2 border-slate-800">
                 <div class="flex justify-between items-end mb-4 px-1">
                     <h2 class="text-md font-bold flex items-center text-slate-800 m-0">
@@ -430,38 +437,39 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- 여행사 측 -->
-                    <div class="border border-slate-300 rounded-lg p-5 bg-slate-50/50 print:bg-white signature-box shadow-sm print:shadow-none">
-                        <h3 class="font-bold text-center text-slate-800 mb-3 pb-2 border-b border-slate-200 text-[14px] print:text-[1rem]">여행업자 (여행사)</h3>
+                <!-- 100% 반영: 서명란 7:5 비율 조정 및 텍스트 한 줄 표기(whitespace-nowrap 적용) -->
+                <div class="flex flex-col md:flex-row gap-6">
+                    <!-- 여행업자 측 (7 비율) -->
+                    <div class="w-full md:w-7/12 border border-slate-300 rounded-lg p-5 bg-slate-50/50 print:bg-white signature-box shadow-sm print:shadow-none">
+                        <h3 class="font-bold text-center text-slate-800 mb-3 pb-2 border-b border-slate-200 text-[14px] print:text-[1rem] whitespace-nowrap">여행업자 (여행사)</h3>
                         <div class="space-y-2 text-[12px] print:text-[0.9rem]">
-                            <div class="flex"><span class="w-16 print:w-14 font-semibold text-slate-600 shrink-0">상호명</span> <span id="info-company" class="font-bold text-slate-900">(주)투어메이커</span></div>
-                            <div class="flex items-center"><span class="w-16 print:w-14 font-semibold text-slate-600 shrink-0">대표자</span> <span id="info-ceo" class="font-bold text-[13px] print:text-[0.95rem]">이 재 명</span> <span class="ml-1 text-slate-400 font-normal">(인)</span></div>
-                            <div class="flex"><span class="w-16 print:w-14 font-semibold text-slate-600 shrink-0">등록번호</span> <span id="info-biznum">473-81-03183</span></div>
-                            <div class="flex items-start"><span class="w-16 print:w-14 font-semibold text-slate-600 shrink-0">소재지</span> <span id="info-address" class="leading-tight">강원특별자치도 정선군 정선읍 봉양3길 22-10, 3층</span></div>
-                            <div class="flex items-center"><span class="w-16 print:w-14 font-semibold text-slate-600 shrink-0">연락처</span> <input type="text" value="010-9443-7881" class="flex-1 bg-transparent p-0 border-none" id="info-phone"></div>
-                            <div class="flex items-center"><span class="w-16 print:w-14 font-semibold text-slate-600 shrink-0">이메일</span> <input type="text" value="jmlojm@nate.com" class="flex-1 bg-transparent p-0 border-none" id="info-email"></div>
+                            <div class="flex items-center whitespace-nowrap"><span class="w-16 print:w-14 font-semibold text-slate-600 shrink-0">상호명</span> <span id="info-company" class="font-bold text-slate-900">(주)투어메이커</span></div>
+                            <div class="flex items-center whitespace-nowrap"><span class="w-16 print:w-14 font-semibold text-slate-600 shrink-0">대표자</span> <span id="info-ceo" class="font-bold text-[13px] print:text-[0.95rem]">이 재 명</span> <span class="ml-1 text-slate-400 font-normal">(인)</span></div>
+                            <div class="flex items-center whitespace-nowrap"><span class="w-16 print:w-14 font-semibold text-slate-600 shrink-0">등록번호</span> <span id="info-biznum">473-81-03183</span></div>
+                            <div class="flex items-start"><span class="w-16 print:w-14 font-semibold text-slate-600 shrink-0">소재지</span> <span id="info-address" class="leading-tight break-keep">강원특별자치도 정선군 정선읍 봉양3길 22-10, 3층</span></div>
+                            <div class="flex items-center whitespace-nowrap"><span class="w-16 print:w-14 font-semibold text-slate-600 shrink-0">연락처</span> <input type="text" value="010-9443-7881" class="flex-1 bg-transparent p-0 border-none" id="info-phone"></div>
+                            <div class="flex items-center whitespace-nowrap"><span class="w-16 print:w-14 font-semibold text-slate-600 shrink-0">이메일</span> <input type="text" value="jmlojm@nate.com" class="flex-1 bg-transparent p-0 border-none" id="info-email"></div>
                         </div>
                         <!-- 직인 이미지 -->
                         <img id="seal-image" src="https://blogger.googleusercontent.com/img/a/AVvXsEiweUsH71be_Y3skDUBOVzZE0M4HnXmgllJq7c1JgatYy5eROHYdkvE9rMIcqVl0DQ2ypgr8fkZSQclgQjWOk8yZA5wiF326Ldf4KTrfd_YEsD2zZjyqsRLS65uv50SLZcLFqIvwZly49lEN3sheIMq4HV_VWLs1irf4o8g3-ajXCA7CaOlSvpKCT4Q2XA=s16000" alt="직인">
                     </div>
 
-                    <!-- 여행자 측 -->
-                    <div class="border border-slate-300 rounded-lg p-5 print:bg-white shadow-sm print:shadow-none">
-                        <h3 class="font-bold text-center text-slate-800 mb-3 pb-2 border-b border-slate-200 text-[14px] print:text-[1rem]">여행자 (또는 대표기관)</h3>
+                    <!-- 여행자 측 (5 비율) -->
+                    <div class="w-full md:w-5/12 border border-slate-300 rounded-lg p-5 print:bg-white shadow-sm print:shadow-none">
+                        <h3 class="font-bold text-center text-slate-800 mb-3 pb-2 border-b border-slate-200 text-[14px] print:text-[1rem] whitespace-nowrap">여행자 (또는 대표기관)</h3>
                         <div class="space-y-4 text-[12px] print:text-[0.9rem] px-1">
-                            <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-2 whitespace-nowrap">
                                 <span class="w-16 print:w-14 font-semibold text-slate-600 shrink-0">단체명</span>
-                                <input type="text" placeholder="예: 00중학교 또는 홍길동" class="flex-1 bg-slate-50 print:bg-white border-b print:border-b border-slate-300 rounded-none p-1">
+                                <input type="text" placeholder="예: 00중학교 또는 홍길동" class="flex-1 bg-slate-50 print:bg-white border-b print:border-b border-slate-300 rounded-none p-1 min-w-0">
                             </div>
-                            <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-2 whitespace-nowrap">
                                 <span class="w-16 print:w-14 font-semibold text-slate-600 shrink-0">대표자</span>
-                                <input type="text" placeholder="성명" class="flex-1 bg-slate-50 print:bg-white border-b print:border-b border-slate-300 rounded-none p-1">
+                                <input type="text" placeholder="성명" class="flex-1 bg-slate-50 print:bg-white border-b print:border-b border-slate-300 rounded-none p-1 min-w-0">
                                 <span class="text-slate-400 text-[12px] print:text-[0.8rem] shrink-0 ml-1">(인/서명)</span>
                             </div>
-                            <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-2 whitespace-nowrap">
                                 <span class="w-16 print:w-14 font-semibold text-slate-600 shrink-0">연락처</span>
-                                <input type="text" placeholder="010-0000-0000" class="flex-1 bg-slate-50 print:bg-white border-b print:border-b border-slate-300 rounded-none p-1">
+                                <input type="text" placeholder="010-0000-0000" class="flex-1 bg-slate-50 print:bg-white border-b print:border-b border-slate-300 rounded-none p-1 min-w-0">
                             </div>
                         </div>
                     </div>
@@ -476,41 +484,8 @@
                 </p>
             </div>
             
-            <!-- ───────────── ESG DASHBOARD (공공기관 보고용) ───────────── -->
-            <div class="mt-8 pt-6 border-t border-slate-200 no-print">
-                <div class="text-center">
-                    <h2 class="text-[15px] font-bold text-emerald-700 mb-4"><i class="fa-solid fa-leaf"></i> ESG 실천 성과 (디지털 전환)</h2>
-                    <div class="flex flex-wrap justify-center gap-3 mb-4 max-w-2xl mx-auto">
-                        <div class="bg-emerald-50 px-4 py-3 rounded-lg border border-emerald-100 flex-1 min-w-[120px]">
-                            <div class="text-emerald-500 text-lg mb-1"><i class="fa-solid fa-file-excel"></i></div>
-                            <div class="text-[11px] text-slate-500 font-bold">종이 절감</div>
-                            <div class="text-lg font-black text-slate-800">8장 <span class="text-[10px] font-normal">/ 1인</span></div>
-                        </div>
-                        <div class="bg-emerald-50 px-4 py-3 rounded-lg border border-emerald-100 flex-1 min-w-[120px]">
-                            <div class="text-emerald-500 text-lg mb-1"><i class="fa-solid fa-cloud-meatball"></i></div>
-                            <div class="text-[11px] text-slate-500 font-bold">탄소 배출 감소</div>
-                            <div class="text-lg font-black text-slate-800">38g <span class="text-[10px] font-normal">/ 1인</span></div>
-                        </div>
-                        <div class="bg-emerald-50 px-4 py-3 rounded-lg border border-emerald-100 flex-1 min-w-[120px]">
-                            <div class="text-emerald-500 text-lg mb-1"><i class="fa-solid fa-droplet"></i></div>
-                            <div class="text-[11px] text-slate-500 font-bold">물 절약</div>
-                            <div class="text-lg font-black text-slate-800">75L <span class="text-[10px] font-normal">/ 1인</span></div>
-                        </div>
-                    </div>
-                    <p class="text-[12px] text-emerald-700 font-medium max-w-xl mx-auto bg-emerald-50 p-3 rounded-lg break-keep">
-                        "본 행사는 스마트 전자계약 시스템 도입을 통해 참여 인원 비례 약 <strong>3그루</strong>의 나무를 심는 효과를 거두었으며, 디지털 전환(DX)을 통한 공공부문 에너지 절약 실천의 모범 사례입니다."
-                    </p>
-                </div>
-            </div>
-
-            <!-- ───────────── TOURMAKER FOOTER (필수 규격) ───────────── -->
+            <!-- 100% 반영: ESG 대시보드 및 홈 버튼 완전 삭제, 최소 워터마크만 유지 -->
             <div class="mt-6 text-center pt-2 pb-6 no-print">
-                <a href="https://tourmaker.kr" target="_blank" class="inline-block bg-white border border-slate-300 rounded-xl px-5 py-2.5 hover:shadow-md transition-shadow mb-4">
-                    <div class="flex items-center gap-2">
-                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHfgIX70O5k6Anuo0UgALIdaG9jSga9auHu3uyz0uEirylGPAJnjN_qQbvEGMUvPqUQf_g9FMNUHRxlDcUBf4vZ3Mpy4TnA9WxbmzWYK11gt2zuy_Irl4wctNFjcjLyPo0GPXV792o_J7L9guRMuDfeC1gy7USwywjYbECZgzcsHybuGRRAXAnO1eNmP8/s320/logo.png" alt="Tourmaker" class="h-5">
-                        <span class="text-[13px] font-bold text-slate-700">홈페이지 바로가기 <i class="fa-solid fa-chevron-right text-[10px]"></i></span>
-                    </div>
-                </a>
                 <div style="background-color: #f8f9fa; padding: 10px; border-radius: 4px;">
                     <p style="font-size: 12px; color: #6c757d; text-align: center; margin: 0; font-family: 'Noto Sans KR', sans-serif;">
                         [System Powered by <a href="https://tourmaker.kr" target="_blank" style="color: #6c757d; font-weight: bold; text-decoration: underline;">TOURMAKER</a>] 
@@ -547,7 +522,8 @@
         }
 
         function autoResize(textarea) {
-            textarea.style.height = 'auto';
+            // 글자를 지울 때도 칸이 맞게 줄어들도록 1px로 초기화 후 실제 내용 높이(scrollHeight) 재계산
+            textarea.style.height = '1px';
             textarea.style.height = textarea.scrollHeight + 'px';
         }
 
@@ -679,7 +655,12 @@
             seal.style.display = state === 'hide' ? 'none' : 'block';
         }
         
-        // 초기 로딩 시 textarea 높이 조절 세팅
+        // 초기 로딩 시 textarea 높이 조절 세팅 (환경에 상관없이 무조건 작동하도록 안정성 강화)
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('textarea').forEach(function(el) {
+                autoResize(el);
+            });
+        });
         window.onload = function() {
             document.querySelectorAll('textarea').forEach(autoResize);
         }
