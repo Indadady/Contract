@@ -4,20 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- 🌟 카카오톡 공유 썸네일 (행정 서류/계약서: 공식 로고 고정 탑재 규칙 적용) -->
     <meta property="og:title" content="표준 여행계약서">
     <meta property="og:description" content="쉽고 빠른 맞춤형 스마트 전자계약 시스템">
     <meta property="og:image" content="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHfgIX70O5k6Anuo0UgALIdaG9jSga9auHu3uyz0uEirylGPAJnjN_qQbvEGMUvPqUQf_g9FMNUHRxlDcUBf4vZ3Mpy4TnA9WxbmzWYK11gt2zuy_Irl4wctNFjcjLyPo0GPXV792o_J7L9guRMuDfeC1gy7USwywjYbECZgzcsHybuGRRAXAnO1eNmP8/s320/logo.png">
     <meta property="og:type" content="website">
 
     <title>투어메이커 - 표준 여행계약서</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts & FontAwesome -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
     
-    <!-- 🚨 Google Analytics 4 (투어메이커 고정 GA4) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-JLH9GD9SVR"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -33,7 +29,6 @@
             color: #111827;
         }
         
-        /* 폼 입력 요소 기본 스타일 */
         input[type="text"], input[type="date"], input[type="number"], textarea {
             width: 100%;
             background-color: #f8fafc;
@@ -45,11 +40,21 @@
             font-family: inherit;
         }
         
-        /* 플레이스홀더 텍스트 */
         input::placeholder, textarea::placeholder {
             font-size: 12px;
             color: #94a3b8;
             font-weight: 400;
+        }
+
+        .transparent-input {
+            min-width: 0;
+        }
+
+        .transparent-input::placeholder {
+            font-size: inherit;
+            font-weight: inherit;
+            color: #94a3b8;
+            opacity: 0.6;
         }
 
         input:focus, textarea:focus {
@@ -60,22 +65,19 @@
         }
         
         textarea {
-            resize: vertical; /* 수동 높이 조절(우측 하단 드래그) 완벽 허용 */
+            resize: vertical;
         }
 
-        /* 투명 인풋 커스텀 (금액 한줄 정렬용) */
         .transparent-input:focus {
             background-color: #f1f5f9 !important;
             border-radius: 4px;
             box-shadow: none !important;
         }
 
-        /* 테이블 기본 세팅 */
         table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; table-layout: fixed; }
         th, td { border: 1px solid #cbd5e1; padding: 0.5rem 0.6rem; vertical-align: middle; }
         th { background-color: #f1f5f9; font-weight: 500; text-align: center; color: #334155; font-size: 0.85rem; }
         
-        /* 직인(도장) 관련 스타일 */
         .signature-box { position: relative; overflow: hidden; }
         #seal-image {
             position: absolute;
@@ -90,11 +92,44 @@
             image-rendering: -webkit-optimize-contrast;
             touch-action: none;
         }
-        #seal-image:active { cursor: grabbing; }
 
-        /* =========================================================
-           [모바일 환경 최적화] (화면 너비 768px 이하) 
-        ========================================================= */
+        .contract-date-wrap {
+            display: inline-flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 0.45rem;
+            white-space: nowrap;
+            flex: 0 0 auto;
+            max-width: 100%;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .trip-date-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .trip-date-wrap input[type="date"] {
+            width: 9.1rem;
+            text-align: center;
+        }
+
+        .legal-note {
+            margin-top: 1.75rem;
+            padding-top: 0.65rem;
+            text-align: center;
+        }
+
+        .legal-note p {
+            font-size: 11px;
+            color: #94a3b8;
+            line-height: 1.55;
+            margin: 0;
+        }
+
         @media screen and (max-width: 768px) {
             table, tbody { display: block; width: 100%; }
             tr { 
@@ -106,31 +141,25 @@
                 overflow: hidden; 
                 background-color: #ffffff;
             }
-            th, td { 
-                display: block; 
-                width: 100%; 
-                border: none; 
-            }
-            th { 
-                background-color: #f8fafc; 
-                text-align: left; 
-                padding: 0.6rem 0.75rem; 
-                border-bottom: 1px solid #e2e8f0; 
-            }
-            td { 
-                padding: 0.6rem 0.75rem; 
-                border-bottom: 1px solid #f1f5f9; 
-            }
+            th, td { display: block; width: 100%; border: none; }
+            th { background-color: #f8fafc; text-align: left; padding: 0.6rem 0.75rem; border-bottom: 1px solid #e2e8f0; }
+            td { padding: 0.6rem 0.75rem; border-bottom: 1px solid #f1f5f9; }
             td:last-child { border-bottom: none; }
             colgroup { display: none; }
+            .trip-date-wrap {
+                justify-content: flex-start;
+                flex-wrap: wrap;
+            }
+            .contract-date-wrap {
+                width: 100%;
+                justify-content: flex-start;
+                white-space: nowrap;
+                overflow: visible;
+            }
         }
 
-        /* =========================================================
-           [인쇄 품질 최적화] - 잔여 외곽선 완벽 제거
-        ========================================================= */
         @media print {
-            @page { size: A4; margin: 12mm 10mm; } 
-            
+            @page { size: A4; margin: 8mm 10mm; }
             body { 
                 background-color: white !important; 
                 margin: 0; padding: 0; 
@@ -138,11 +167,7 @@
                 print-color-adjust: exact !important; 
                 color: #000 !important;
             }
-            
-            /* 불필요한 요소 숨김 */
             .no-print, .control-panel { display: none !important; }
-            
-            /* 100% 반영: 메인 컨테이너 외곽선 및 여백 완벽 제거 */
             .print-container {
                 border: none !important;
                 box-shadow: none !important;
@@ -151,8 +176,6 @@
                 max-width: 100% !important;
                 width: 100% !important;
             }
-
-            /* 폼 요소를 일반 텍스트처럼 보이게 처리 */
             input[type="text"], input[type="date"], input[type="number"], textarea {
                 border: none !important;
                 background: transparent !important;
@@ -162,99 +185,57 @@
                 resize: none !important;
                 overflow: visible !important;
             }
-            
-            /* 플레이스홀더 인쇄 방지 */
             input::placeholder, textarea::placeholder { color: transparent !important; }
-            
-            /* 날짜 캘린더 아이콘 인쇄 방지 */
-            input[type="date"]::-webkit-calendar-picker-indicator,
-            input[type="date"]::-webkit-inner-spin-button {
-                display: none !important;
-                -webkit-appearance: none !important;
-            }
-            
-            /* 테이블 강제 고정 */
-            table { 
-                display: table !important; 
-                width: 100% !important; 
-                border-collapse: collapse !important; 
-                margin-bottom: 1rem !important; 
-            }
+            table { display: table !important; width: 100% !important; border-collapse: collapse !important; margin-bottom: 1rem !important; }
             colgroup { display: table-column-group !important; }
             tbody { display: table-row-group !important; }
-            tr { 
-                display: table-row !important; 
-                border: none !important; 
-                border-radius: 0 !important;
-            }
-            th, td { 
-                display: table-cell !important; 
-                border: 1px solid #94a3b8 !important; 
-                padding: 0.45rem 0.55rem !important;
-                font-size: 0.9rem !important;
-                line-height: 1.4 !important;
-            }
-            th { 
-                background-color: #f1f5f9 !important; 
-                text-align: center !important; 
-            }
-
+            tr { display: table-row !important; border: none !important; border-radius: 0 !important; }
+            th, td { display: table-cell !important; border: 1px solid #94a3b8 !important; padding: 0.45rem 0.55rem !important; font-size: 0.9rem !important; line-height: 1.4 !important; }
+            th { background-color: #f1f5f9 !important; text-align: center !important; }
             h1 { font-size: 1.7rem !important; margin-bottom: 0.2rem !important; letter-spacing: -0.025em !important; }
             h2 { font-size: 1.05rem !important; margin-top: 1.5rem !important; margin-bottom: 0.5rem !important; }
             p { font-size: 0.9rem !important; line-height: 1.6 !important; }
-            
-            /* 인쇄 시 레이아웃 강제 유지 */
-            .sm\:flex-row { flex-direction: row !important; }
-            .md\:flex-row { flex-direction: row !important; }
-            .md\:w-7\/12 { width: 58.333333% !important; }
-            .md\:w-5\/12 { width: 41.666667% !important; }
             .hidden.print\:block { display: block !important; }
-            
-            /* 도장 이미지 */
             #seal-image { border: none !important; mix-blend-mode: multiply !important; }
+            .legal-note p { font-size: 10.5px !important; line-height: 1.45 !important; color: #64748b !important; }
         }
     </style>
 </head>
 <body class="font-sans text-gray-900 overflow-x-hidden">
 
-    <!-- 와이드 화면 레이아웃 컨테이너 -->
     <div class="max-w-[1300px] mx-auto py-4 sm:py-8 px-4 flex flex-col lg:flex-row gap-6 lg:gap-8 items-start justify-center relative">
         
-        <!-- 우측 컨트롤 패널 (인쇄 시 숨김) -->
         <div class="w-full lg:w-72 sticky top-4 lg:top-8 no-print control-panel p-5 rounded-xl shadow-lg shrink-0 order-first lg:order-last z-50 bg-white border border-slate-200">
             <h3 class="font-bold text-slate-800 text-[15px] mb-2 border-b border-slate-200 pb-2 flex justify-between items-center">
                 계약서 설정 도구
                 <span class="lg:hidden text-[11px] text-blue-500 font-normal">▼ 아래로 스크롤</span>
             </h3>
             
-            <!-- 회사 선택 -->
             <div class="flex flex-col gap-2 text-[13px] mt-3">
                 <label class="font-bold text-slate-700 bg-slate-100 p-1.5 rounded text-center">🏢 발급 주체 선택</label>
                 <label class="flex items-center cursor-pointer hover:bg-blue-50 p-1.5 rounded border border-transparent hover:border-blue-100 transition">
-                    <input type="radio" name="companyType" value="jeongseon" checked onchange="changeCompany()" class="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500">
+                    <input type="radio" name="companyType" value="jeongseon" checked onchange="changeCompany()" class="mr-2 h-4 w-4 text-blue-600">
                     (주)투어메이커
                 </label>
                 <label class="flex items-center cursor-pointer hover:bg-blue-50 p-1.5 rounded border border-transparent hover:border-blue-100 transition">
-                    <input type="radio" name="companyType" value="taebaek" onchange="changeCompany()" class="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500">
+                    <input type="radio" name="companyType" value="taebaek" onchange="changeCompany()" class="mr-2 h-4 w-4 text-blue-600">
                     투어메이커 (일반)
                 </label>
                 <label class="flex items-center cursor-pointer hover:bg-orange-50 p-1.5 rounded border border-transparent hover:border-orange-100 transition">
-                    <input type="radio" name="companyType" value="jeju" onchange="changeCompany()" class="mr-2 h-4 w-4 text-orange-500 focus:ring-orange-500">
+                    <input type="radio" name="companyType" value="jeju" onchange="changeCompany()" class="mr-2 h-4 w-4 text-orange-500">
                     <span class="text-orange-700 font-medium">(주)우리들여행</span>
                 </label>
             </div>
 
-            <!-- 직인 설정 -->
             <div class="mt-4 text-[13px] bg-slate-50 p-3 rounded-lg border border-slate-100">
                 <div class="flex justify-between items-center mb-2">
                     <label class="font-bold text-slate-700">🔴 직인 설정</label>
                     <div class="flex gap-2 text-[12px]">
-                        <label class="flex items-center cursor-pointer hover:text-blue-600"><input type="radio" name="sealToggle" value="show" checked onchange="toggleSeal(this.value)" class="mr-1 accent-blue-600">노출</label>
-                        <label class="flex items-center cursor-pointer hover:text-blue-600"><input type="radio" name="sealToggle" value="hide" onchange="toggleSeal(this.value)" class="mr-1 accent-blue-600">숨김</label>
+                        <label class="flex items-center cursor-pointer"><input type="radio" name="sealToggle" value="show" checked onchange="toggleSeal(this.value)" class="mr-1">노출</label>
+                        <label class="flex items-center cursor-pointer"><input type="radio" name="sealToggle" value="hide" onchange="toggleSeal(this.value)" class="mr-1">숨김</label>
                     </div>
                 </div>
                 <input type="range" id="sealSize" min="40" max="120" value="70" class="w-full accent-blue-600 mt-1" oninput="changeSealSize(this.value)">
-                <p class="text-[11px] text-slate-500 mt-2 text-center leading-tight">마우스/터치로 도장을 직접 이동할 수 있습니다.</p>
             </div>
 
             <div class="mt-5 pt-4 border-t border-slate-200 flex flex-col gap-2">
@@ -262,23 +243,19 @@
                     <i class="fa-solid fa-print mr-2"></i> PDF 저장 / 인쇄하기
                 </button>
                 <button onclick="clearForm()" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2.5 px-4 rounded-lg shadow flex items-center justify-center transition w-full text-[13px]">
-                    <i class="fa-solid fa-rotate-right mr-2"></i> 입력 내용 전체 초기화
+                    <i class="fa-solid fa-rotate-right mr-2"></i> 내용 초기화
                 </button>
             </div>
         </div>
 
-        <!-- 메인 계약서 영역 -->
-        <div class="print-container bg-white w-full lg:w-[21cm] px-6 py-10 shadow-xl box-border mx-auto lg:mx-0 rounded-lg lg:rounded-none border border-slate-200">
+        <div class="print-container bg-white w-full lg:w-[21cm] px-6 pt-5 pb-10 shadow-xl box-border mx-auto lg:mx-0 rounded-lg lg:rounded-none border border-slate-200">
             
-            <!-- 헤더 / 로고 -->
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end border-b-2 border-slate-800 pb-3 mb-5 gap-4 sm:gap-0">
                 <div class="order-last sm:order-first">
-                    <!-- 웹용 로고 (클릭 이동) -->
-                    <a href="https://tourmaker.kr" target="_blank" class="no-print" title="회사 홈페이지로 이동">
-                        <img id="main-logo-1" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHfgIX70O5k6Anuo0UgALIdaG9jSga9auHu3uyz0uEirylGPAJnjN_qQbvEGMUvPqUQf_g9FMNUHRxlDcUBf4vZ3Mpy4TnA9WxbmzWYK11gt2zuy_Irl4wctNFjcjLyPo0GPXV792o_J7L9guRMuDfeC1gy7USwywjYbECZgzcsHybuGRRAXAnO1eNmP8/s320/logo.png" alt="Company Logo" class="h-8 sm:h-10 object-contain">
+                    <a href="https://tourmaker.kr" target="_blank" class="no-print">
+                        <img id="main-logo-1" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHfgIX70O5k6Anuo0UgALIdaG9jSga9auHu3uyz0uEirylGPAJnjN_qQbvEGMUvPqUQf_g9FMNUHRxlDcUBf4vZ3Mpy4TnA9WxbmzWYK11gt2zuy_Irl4wctNFjcjLyPo0GPXV792o_J7L9guRMuDfeC1gy7USwywjYbECZgzcsHybuGRRAXAnO1eNmP8/s320/logo.png" alt="Logo" class="h-8 sm:h-10 object-contain">
                     </a>
-                    <!-- 인쇄용 로고 (링크 없음) -->
-                    <img id="main-logo-2" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHfgIX70O5k6Anuo0UgALIdaG9jSga9auHu3uyz0uEirylGPAJnjN_qQbvEGMUvPqUQf_g9FMNUHRxlDcUBf4vZ3Mpy4TnA9WxbmzWYK11gt2zuy_Irl4wctNFjcjLyPo0GPXV792o_J7L9guRMuDfeC1gy7USwywjYbECZgzcsHybuGRRAXAnO1eNmP8/s320/logo.png" alt="Company Logo" class="h-10 object-contain hidden print:block">
+                    <img id="main-logo-2" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHfgIX70O5k6Anuo0UgALIdaG9jSga9auHu3uyz0uEirylGPAJnjN_qQbvEGMUvPqUQf_g9FMNUHRxlDcUBf4vZ3Mpy4TnA9WxbmzWYK11gt2zuy_Irl4wctNFjcjLyPo0GPXV792o_J7L9guRMuDfeC1gy7USwywjYbECZgzcsHybuGRRAXAnO1eNmP8/s320/logo.png" alt="Logo" class="h-10 object-contain hidden print:block">
                 </div>
                 <div class="text-left sm:text-right w-full sm:w-auto">
                     <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 m-0">표준 여행계약서</h1>
@@ -286,36 +263,32 @@
                 </div>
             </div>
 
-            <!-- 서문 -->
             <p class="mb-5 text-slate-700 leading-relaxed text-[13px] print:text-[0.9rem]">
-                <span id="txt-company-name-intro" class="font-bold text-blue-800">(주)투어메이커</span>(이하 "여행사"라 함)와 아래 기재된 여행자 또는 대표기관(이하 "여행자"라 함)은 
-                다음과 같이 여행 계약을 체결하고, 상호 신의성실의 원칙에 따라 본 계약을 이행할 것을 확약합니다.
+                <span id="txt-company-name-intro" class="font-bold text-blue-800">(주)투어메이커</span>(이하 "여행사"라 함)와 아래 기재된 여행자 또는 대표기관(이하 "여행자"라 함)은 여행 계약을 체결하고, 상호 신의성실의 원칙에 따라 본 계약을 이행할 것을 확약합니다.
             </p>
 
-            <!-- 1. 여행 개요 -->
             <h2 class="text-md font-bold mb-2 flex items-center text-slate-800">
                 <span class="w-1 h-4 bg-blue-600 inline-block mr-2 print:bg-slate-800"></span> 1. 여행 개요
             </h2>
             <table>
                 <colgroup>
-                    <col style="width: 15%;">
-                    <col style="width: 45%;">
-                    <col style="width: 15%;">
-                    <col style="width: 25%;">
+                    <col class="w-[15%]">
+                    <col class="w-[45%] print:w-[35%]">
+                    <col class="w-[15%]">
+                    <col class="w-[25%] print:w-[35%]">
                 </colgroup>
                 <tbody>
                     <tr>
                         <th>여행 상품명</th>
-                        <td colspan="3"><input type="text" placeholder="예: 2026년 00기관 우수직원 해외 연수 (싱가포르)"></td>
+                        <td colspan="3"><input type="text" placeholder="예: 2026년 00기관 우수직원 해외 연수"></td>
                     </tr>
                     <tr>
                         <th>여행 기간</th>
                         <td>
-                            <div class="flex items-center gap-1">
-                                <input type="date" class="w-32 p-1 text-[13px] print:text-[0.9rem]"> 
-                                <span class="font-bold">~</span> 
-                                <input type="date" class="w-32 p-1 text-[13px] print:text-[0.9rem]">
-                                <input type="text" placeholder="예: 3박 5일" class="flex-1 ml-2 p-1">
+                            <div class="trip-date-wrap">
+                                <input type="date" class="p-1 text-center"> 
+                                <span class="font-bold shrink-0">~</span> 
+                                <input type="date" class="p-1 text-center">
                             </div>
                         </td>
                         <th>여행 지역</th>
@@ -323,63 +296,56 @@
                     </tr>
                     <tr>
                         <th>여행 인원</th>
-                        <td><input type="text" placeholder="예: 성인 34명 (인솔자 제외)"></td>
+                        <td><input type="text" placeholder="예: 성인 34명"></td>
                         <th>교통 수단</th>
                         <td><input type="text" placeholder="예: 대한항공 등"></td>
                     </tr>
-                    <!-- 100% 반영: 숙박시설 행(tr) 완벽 삭제 완료 -->
                 </tbody>
             </table>
 
-            <!-- 2. 여행 요금 및 결제 -->
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-2 mt-6 gap-3 sm:gap-0">
                 <h2 class="text-md font-bold flex items-center text-slate-800 m-0">
                     <span class="w-1 h-4 bg-blue-600 inline-block mr-2 print:bg-slate-800"></span> 2. 여행 요금 및 결제
                 </h2>
-                <div class="flex items-center gap-3 text-[12px] font-medium font-sans bg-slate-100 px-3 py-1.5 rounded text-slate-600 w-full sm:w-auto justify-center sm:justify-start">
-                    <label class="flex items-center cursor-pointer hover:text-blue-600">
-                        <input type="radio" name="vatType" value="총액" checked class="mr-1.5 w-3.5 h-3.5 accent-blue-600">총액 계약 (VAT포함)
-                    </label>
-                    <label class="flex items-center cursor-pointer hover:text-blue-600">
-                        <input type="radio" name="vatType" value="순액" class="mr-1.5 w-3.5 h-3.5 accent-blue-600">순액 계약 (VAT별도)
-                    </label>
+                <div class="flex items-center gap-3 text-[12px] font-medium bg-slate-100 px-3 py-1.5 rounded text-slate-600">
+                    <label class="flex items-center cursor-pointer"><input type="radio" name="vatType" value="총액" checked class="mr-1.5">총액(VAT포함)</label>
+                    <label class="flex items-center cursor-pointer"><input type="radio" name="vatType" value="순액" class="mr-1.5">순액(VAT별도)</label>
                 </div>
             </div>
             <table>
                 <colgroup>
                     <col style="width: 14%;">
-                    <col style="width: 22%;">
-                    <col style="width: 11%;">
-                    <col style="width: 21%;">
-                    <col style="width: 11%;">
+                    <col style="width: 27%;">
+                    <col style="width: 10%;">
+                    <col style="width: 18%;">
+                    <col style="width: 10%;">
                     <col style="width: 21%;">
                 </colgroup>
                 <tbody>
                     <tr>
                         <th>총 계약 금액</th>
-                        <!-- 총 계약금액 셀 패딩과 폰트 크기 대폭 확대 -->
-                        <td class="text-center align-middle bg-blue-50/20 print:bg-transparent py-3 print:py-2">
-                            <div class="flex items-center justify-center border-b-2 border-blue-300 print:border-none pb-1 w-[95%] mx-auto">
-                                <span class="font-bold text-blue-700 print:text-black mr-1 text-[20px] print:text-[1.4rem]">₩</span>
-                                <input type="text" id="num-amount" oninput="formatNumberInput(this); calculateBalance();" placeholder="25,000,000" class="transparent-input !border-none !bg-transparent !p-0 !m-0 !shadow-none outline-none w-full text-center font-black text-[30px] print:text-[1.8rem] tracking-wide text-blue-700 print:text-black">
+                        <td class="text-center align-middle bg-blue-50/20 print:bg-transparent py-4 print:py-2">
+                            <div class="flex items-center justify-center border-b-2 border-blue-300 print:border-none pb-1 w-[88%] mx-auto overflow-hidden">
+                                <span class="font-bold text-blue-700 print:text-black mr-1 text-[20px] print:text-[1.2rem] pt-1 shrink-0">₩</span>
+                                <input type="text" id="num-amount" oninput="formatNumberInput(this); calculateBalance();" placeholder="25,000,000" class="transparent-input !border-none !bg-transparent !p-0 !m-0 !shadow-none outline-none w-full min-w-0 text-center font-black text-[34px] print:text-[1.65rem] h-10 tracking-[-0.03em] text-blue-700 print:text-black">
                             </div>
                         </td>
                         <th>계약금</th>
                         <td class="text-center align-middle">
-                            <div class="flex items-center justify-center border-b border-slate-200 print:border-none pb-1 w-[90%] mx-auto mt-1">
-                                <span class="font-bold text-slate-700 mr-1 text-[15px] print:text-[1.05rem]">₩</span>
-                                <input type="text" id="deposit-amount" placeholder="1,500,000" oninput="formatNumberInput(this); calculateBalance();" class="transparent-input !border-none !bg-transparent !p-0 !m-0 !shadow-none outline-none w-full text-center font-bold text-[16px] print:text-[1.1rem] tracking-wide text-slate-800">
+                            <div class="flex items-center justify-center border-b border-slate-200 print:border-none pb-1 w-[90%] mx-auto overflow-hidden">
+                                <span class="font-bold text-slate-700 mr-1 text-[15px] shrink-0">₩</span>
+                                <input type="text" id="deposit-amount" placeholder="1,500,000" oninput="formatNumberInput(this); calculateBalance();" class="transparent-input !border-none !bg-transparent !p-0 !m-0 !shadow-none outline-none w-full min-w-0 text-center font-bold text-[18px] text-slate-800 tracking-[-0.01em]">
                             </div>
                         </td>
                         <th>잔금</th>
-                        <td class="text-center align-middle">
-                            <div class="flex items-center justify-center border-b border-slate-200 print:border-none pb-1 w-[90%] mx-auto mt-1">
-                                <span class="font-bold text-slate-700 mr-1 text-[15px] print:text-[1.05rem]">₩</span>
-                                <input type="text" id="balance-amount" placeholder="23,500,000" oninput="formatNumberInput(this)" class="transparent-input !border-none !bg-transparent !p-0 !m-0 !shadow-none outline-none w-full text-center font-bold text-[16px] print:text-[1.1rem] tracking-wide text-slate-800">
+                        <td class="text-center align-middle min-w-[165px]">
+                            <div class="flex items-center justify-center border-b border-slate-200 print:border-none pb-1 w-[90%] mx-auto overflow-hidden">
+                                <span class="font-bold text-slate-700 mr-1 text-[15px] shrink-0">₩</span>
+                                <input type="text" id="balance-amount" placeholder="23,500,000" oninput="formatNumberInput(this)" class="transparent-input !border-none !bg-transparent !p-0 !m-0 !shadow-none outline-none w-full min-w-0 text-center font-bold text-[18px] text-slate-800 tracking-[-0.01em]">
                             </div>
-                            <div class="flex items-center justify-center mt-1.5 text-[11px] print:text-[0.8rem] text-slate-500 w-[90%] mx-auto gap-1">
-                                <span class="whitespace-nowrap mr-1 font-bold">기한:</span>
-                                <input type="date" class="transparent-input !border-none !bg-transparent !p-0 !m-0 !shadow-none outline-none w-full text-center text-slate-700 print:text-black">
+                            <div class="flex items-center justify-center gap-1 mt-1 text-[10px] text-slate-500 whitespace-nowrap">
+                                <span class="font-bold shrink-0">기한:</span>
+                                <input type="date" class="!border-none !bg-transparent !p-0 w-[102px] min-w-[102px] text-[10px] leading-none">
                             </div>
                         </td>
                     </tr>
@@ -388,7 +354,7 @@
                         <td colspan="5" class="bg-blue-50/10 print:bg-white">
                             <div class="flex items-center font-bold text-[13px] print:text-[0.95rem]">
                                 <span id="txt-bank-name" class="mr-3 text-slate-700">신협</span>
-                                <span id="txt-bank-account" class="mr-4 text-blue-600 print:text-black text-[16px] print:text-[1.05rem] tracking-wider">131-022-382094</span>
+                                <span id="txt-bank-account" class="mr-4 text-blue-600 print:text-black text-[18px] print:text-[1.1rem] tracking-wider font-extrabold">131-022-382094</span>
                                 <span class="text-slate-800">예금주 : <span id="txt-bank-holder">(주)투어메이커</span></span>
                             </div>
                         </td>
@@ -396,121 +362,91 @@
                 </tbody>
             </table>
 
-            <!-- 3. 특별 포함/불포함 및 특약 -->
-            <div class="flex justify-between items-end mb-2 mt-6">
-                <h2 class="text-md font-bold flex items-center text-slate-800 m-0">
-                    <span class="w-1 h-4 bg-blue-600 inline-block mr-2 print:bg-slate-800"></span> 3. 부대 조건 및 특약 사항
-                </h2>
-            </div>
+            <h2 class="text-md font-bold mb-2 mt-6 flex items-center text-slate-800">
+                <span class="w-1 h-4 bg-blue-600 inline-block mr-2 print:bg-slate-800"></span> 3. 부대 조건 및 특약 사항
+            </h2>
             <table>
-                <colgroup>
-                    <col style="width: 15%;">
-                    <col style="width: 85%;">
-                </colgroup>
+                <colgroup><col class="w-[15%]"><col class="w-[85%]"></colgroup>
                 <tbody>
                     <tr>
                         <th>포함 사항</th>
-                        <td><textarea rows="2" placeholder="왕복 항공권, 전일정 숙박/식사, 현지 차량/가이드, 관광지 입장료, 여행자보험 등 (상세 내역 견적서 참조)" oninput="autoResize(this)"></textarea></td>
+                        <td><textarea rows="2" placeholder="전일정 숙박/식사, 관광지 입장료 등" oninput="autoResize(this)"></textarea></td>
                     </tr>
                     <tr>
                         <th>불포함 사항</th>
-                        <td><textarea rows="1" placeholder="여권 발급비, 개인 경비, 호텔 매너팁 등" oninput="autoResize(this)"></textarea></td>
+                        <td><textarea rows="1" placeholder="개인 경비, 매너팁 등" oninput="autoResize(this)"></textarea></td>
                     </tr>
                     <tr>
                         <th>특약/기타</th>
-                        <td><textarea rows="2" placeholder="본 계약은 기획/맞춤 여행으로 진행되며, 취소 수수료 등 세부 규정은 여행사 표준약관 및 별도 첨부된 특별약관에 따릅니다." oninput="autoResize(this)"></textarea></td>
+                        <td><textarea rows="2" placeholder="표준약관 및 특별약관에 따릅니다." oninput="autoResize(this)"></textarea></td>
                     </tr>
                 </tbody>
             </table>
 
-            <!-- 4. 서명란 -->
             <div class="mt-8 pt-5 border-t-2 border-slate-800">
-                <div class="flex justify-between items-end mb-4 px-1">
+                <div class="flex flex-col sm:flex-row justify-between sm:items-end mb-4 px-1 gap-2">
                     <h2 class="text-md font-bold flex items-center text-slate-800 m-0">
                         <span class="w-1 h-4 bg-blue-600 inline-block mr-2 print:bg-slate-800"></span> 4. 계약자 서명
                     </h2>
-                    <div class="flex items-center text-[13px] print:text-[0.95rem] font-bold text-slate-800 shrink-0 whitespace-nowrap">
-                        계약체결일 : <input type="text" placeholder="2026년 04월 03일" class="w-28 sm:w-32 text-center bg-transparent border-b border-slate-400 print:border-none font-bold ml-2 rounded-none p-1 text-[13px] print:text-[0.95rem]">
+                    <div class="contract-date-wrap text-[13px] font-bold text-slate-800 sm:ml-4">
+                        <span class="shrink-0">계약체결일 :</span>
+                        <input type="text" placeholder="2026년 04월 03일" class="w-[124px] min-w-[124px] max-w-[124px] text-center bg-transparent border-b border-slate-400 font-bold p-1 shrink-0">
                     </div>
                 </div>
 
-                <!-- 100% 반영: 서명란 7:5 비율 조정 및 텍스트 한 줄 표기(whitespace-nowrap 적용) -->
-                <div class="flex flex-col md:flex-row gap-6">
-                    <!-- 여행업자 측 (7 비율) -->
-                    <div class="w-full md:w-7/12 border border-slate-300 rounded-lg p-5 bg-slate-50/50 print:bg-white signature-box shadow-sm print:shadow-none">
-                        <h3 class="font-bold text-center text-slate-800 mb-3 pb-2 border-b border-slate-200 text-[14px] print:text-[1rem] whitespace-nowrap">여행업자 (여행사)</h3>
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="w-full md:w-[56%] border border-slate-300 rounded-lg p-5 bg-slate-50/50 print:bg-white signature-box shadow-sm print:shadow-none">
+                        <h3 class="font-bold text-center text-slate-800 mb-3 pb-2 border-b border-slate-200 text-[14px]">여행업자 (여행사)</h3>
                         <div class="space-y-2 text-[12px] print:text-[0.9rem]">
-                            <div class="flex items-center whitespace-nowrap"><span class="w-16 print:w-14 font-semibold text-slate-600 shrink-0">상호명</span> <span id="info-company" class="font-bold text-slate-900">(주)투어메이커</span></div>
-                            <div class="flex items-center whitespace-nowrap"><span class="w-16 print:w-14 font-semibold text-slate-600 shrink-0">대표자</span> <span id="info-ceo" class="font-bold text-[13px] print:text-[0.95rem]">이 재 명</span> <span class="ml-1 text-slate-400 font-normal">(인)</span></div>
-                            <div class="flex items-center whitespace-nowrap"><span class="w-16 print:w-14 font-semibold text-slate-600 shrink-0">등록번호</span> <span id="info-biznum">473-81-03183</span></div>
-                            <div class="flex items-start"><span class="w-16 print:w-14 font-semibold text-slate-600 shrink-0">소재지</span> <span id="info-address" class="leading-tight break-keep">강원특별자치도 정선군 정선읍 봉양3길 22-10, 3층</span></div>
-                            <div class="flex items-center whitespace-nowrap"><span class="w-16 print:w-14 font-semibold text-slate-600 shrink-0">연락처</span> <input type="text" value="010-9443-7881" class="flex-1 bg-transparent p-0 border-none" id="info-phone"></div>
-                            <div class="flex items-center whitespace-nowrap"><span class="w-16 print:w-14 font-semibold text-slate-600 shrink-0">이메일</span> <input type="text" value="jmlojm@nate.com" class="flex-1 bg-transparent p-0 border-none" id="info-email"></div>
+                            <div class="flex items-center"><span class="w-16 font-semibold text-slate-600 shrink-0">상호명</span> <span id="info-company" class="font-bold">(주)투어메이커</span></div>
+                            <div class="flex items-center"><span class="w-16 font-semibold text-slate-600 shrink-0">대표자</span> <span id="info-ceo" class="font-bold">이 재 명</span> <span class="ml-1 text-slate-400 font-normal">(인)</span></div>
+                            <div class="flex items-center"><span class="w-16 font-semibold text-slate-600 shrink-0">등록번호</span> <span id="info-biznum">473-81-03183</span></div>
+                            <div class="flex items-start"><span class="w-16 font-semibold text-slate-600 shrink-0">소재지</span> <span id="info-address" class="leading-tight break-keep">강원특별자치도 정선군 정선읍 봉양3길 22-10</span></div>
+                            <div class="flex items-center"><span class="w-16 font-semibold text-slate-600 shrink-0">연락처</span> <input type="text" value="010-9443-7881" class="flex-1 bg-transparent border-none p-0" id="info-phone"></div>
+                            <div class="flex items-center"><span class="w-16 font-semibold text-slate-600 shrink-0">이메일</span> <input type="text" value="jmlojm@nate.com" class="flex-1 bg-transparent border-none p-0" id="info-email"></div>
                         </div>
-                        <!-- 직인 이미지 -->
-                        <img id="seal-image" src="https://blogger.googleusercontent.com/img/a/AVvXsEiweUsH71be_Y3skDUBOVzZE0M4HnXmgllJq7c1JgatYy5eROHYdkvE9rMIcqVl0DQ2ypgr8fkZSQclgQjWOk8yZA5wiF326Ldf4KTrfd_YEsD2zZjyqsRLS65uv50SLZcLFqIvwZly49lEN3sheIMq4HV_VWLs1irf4o8g3-ajXCA7CaOlSvpKCT4Q2XA=s16000" alt="직인">
+                        <img id="seal-image" src="https://blogger.googleusercontent.com/img/a/AVvXsEiweUsH71be_Y3skDUBOVzZE0M4HnXmgllJq7c1JgatYy5eROHYdkvE9rMIcqVl0DQ2ypgr8fkZSQclgQjWOk8yZA5wiF326Ldf4KTrfd_YEsD2zZjyqsRLS65uv50SLZcLFqIvwZly49lEN3sheIMq4HV_VWLs1irf4o8g3-ajXCA7CaOlSvpKCT4Q2XA=s16000" alt="Seal">
                     </div>
 
-                    <!-- 여행자 측 (5 비율) -->
-                    <div class="w-full md:w-5/12 border border-slate-300 rounded-lg p-5 print:bg-white shadow-sm print:shadow-none">
-                        <h3 class="font-bold text-center text-slate-800 mb-3 pb-2 border-b border-slate-200 text-[14px] print:text-[1rem] whitespace-nowrap">여행자 (또는 대표기관)</h3>
-                        <div class="space-y-4 text-[12px] print:text-[0.9rem] px-1">
-                            <div class="flex items-center gap-2 whitespace-nowrap">
-                                <span class="w-16 print:w-14 font-semibold text-slate-600 shrink-0">단체명</span>
-                                <input type="text" placeholder="예: 00중학교 또는 홍길동" class="flex-1 bg-slate-50 print:bg-white border-b print:border-b border-slate-300 rounded-none p-1 min-w-0">
-                            </div>
-                            <div class="flex items-center gap-2 whitespace-nowrap">
-                                <span class="w-16 print:w-14 font-semibold text-slate-600 shrink-0">대표자</span>
-                                <input type="text" placeholder="성명" class="flex-1 bg-slate-50 print:bg-white border-b print:border-b border-slate-300 rounded-none p-1 min-w-0">
-                                <span class="text-slate-400 text-[12px] print:text-[0.8rem] shrink-0 ml-1">(인/서명)</span>
-                            </div>
-                            <div class="flex items-center gap-2 whitespace-nowrap">
-                                <span class="w-16 print:w-14 font-semibold text-slate-600 shrink-0">연락처</span>
-                                <input type="text" placeholder="010-0000-0000" class="flex-1 bg-slate-50 print:bg-white border-b print:border-b border-slate-300 rounded-none p-1 min-w-0">
-                            </div>
+                    <div class="w-full md:w-[44%] border border-slate-300 rounded-lg p-5 print:bg-white shadow-sm print:shadow-none">
+                        <h3 class="font-bold text-center text-slate-800 mb-3 pb-2 border-b border-slate-200 text-[14px]">여행자 (또는 대표기관)</h3>
+                        <div class="space-y-4 text-[12px] px-1">
+                            <div class="flex items-center gap-2"><span class="w-16 font-semibold text-slate-600 shrink-0">단체명</span><input type="text" placeholder="예: 00중학교" class="flex-1 border-b p-1"></div>
+                            <div class="flex items-center gap-2"><span class="w-16 font-semibold text-slate-600 shrink-0">대표자</span><input type="text" placeholder="성명" class="flex-1 border-b p-1"><span class="text-slate-400 text-[10px] shrink-0 ml-1">(인)</span></div>
+                            <div class="flex items-center gap-2"><span class="w-16 font-semibold text-slate-600 shrink-0">연락처</span><input type="text" placeholder="010-0000-0000" class="flex-1 border-b p-1"></div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 하단 안내 문구 -->
-            <div class="mt-8 text-center pt-4">
-                <p class="text-[11px] print:text-[0.85rem] text-slate-400 mb-3">
-                    본 계약서는 [관광진흥법] 및 [소비자 분쟁해결기준]에 근거하여 작성된 표준 양식입니다. <br>
-                    자세한 여행 약관 및 일정은 별도로 교부된 자료(견적서, 상세일정표)를 참조하시기 바랍니다.
-                </p>
+            <div class="legal-note">
+                <p>본 계약서는 [관광진흥법] 및 [소비자 분쟁해결기준]에 근거하여 작성된 표준 양식입니다.</p>
+                <p>자세한 여행 약관 및 일정은 별도로 교부된 자료(견적서, 상세일정표)를 참조하시기 바랍니다.</p>
             </div>
             
-            <!-- 100% 반영: ESG 대시보드 및 홈 버튼 완전 삭제, 최소 워터마크만 유지 -->
-            <div class="mt-6 text-center pt-2 pb-6 no-print">
+            <div class="mt-4 text-center pt-2 pb-6 no-print">
                 <div style="background-color: #f8f9fa; padding: 10px; border-radius: 4px;">
                     <p style="font-size: 12px; color: #6c757d; text-align: center; margin: 0; font-family: 'Noto Sans KR', sans-serif;">
                         [System Powered by <a href="https://tourmaker.kr" target="_blank" style="color: #6c757d; font-weight: bold; text-decoration: underline;">TOURMAKER</a>] 
-                        본 스마트 전자계약서는 <strong id="txt-footer-agency">(주)투어메이커</strong>의 기획과 투어메이커의 트래블 테크 기술 제휴로 제작되었습니다.
+                        본 스마트 전자계약서는 <strong id="txt-footer-agency">(주)투어메이커</strong>의 기획과 기술 제휴로 제작되었습니다.
                     </p>
                 </div>
             </div>
-
         </div>
     </div>
 
     <script>
         function formatNumberInput(input) {
             let val = input.value.replace(/[^0-9]/g, '');
-            if (!val) {
-                input.value = '';
-                return;
-            }
+            if (!val) { input.value = ''; return; }
             input.value = Number(val).toLocaleString('ko-KR');
         }
 
         function calculateBalance() {
             const totalStr = document.getElementById('num-amount').value.replace(/[^0-9]/g, '');
             const depositStr = document.getElementById('deposit-amount').value.replace(/[^0-9]/g, '');
-            
             const total = totalStr ? parseInt(totalStr, 10) : 0;
             const deposit = depositStr ? parseInt(depositStr, 10) : 0;
-            
             if (total > 0) {
                 let balance = total - deposit;
                 if (balance < 0) balance = 0;
@@ -519,145 +455,81 @@
         }
 
         function autoResize(textarea) {
-            // 수동 조절(드래그)과 자동 조절(타이핑)이 충돌하지 않도록 가장 안정적이었던 원본 방식으로 복원
             textarea.style.height = 'auto';
             textarea.style.height = textarea.scrollHeight + 'px';
         }
 
-        // --- 발급주체 데이터 세팅 ---
         const tmLogo = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHfgIX70O5k6Anuo0UgALIdaG9jSga9auHu3uyz0uEirylGPAJnjN_qQbvEGMUvPqUQf_g9FMNUHRxlDcUBf4vZ3Mpy4TnA9WxbmzWYK11gt2zuy_Irl4wctNFjcjLyPo0GPXV792o_J7L9guRMuDfeC1gy7USwywjYbECZgzcsHybuGRRAXAnO1eNmP8/s320/logo.png";
         const companyData = {
             jeongseon: {
-                introName: "(주)투어메이커",
-                bankName: "신협", bankAccount: "131-022-382094", bankHolder: "(주)투어메이커",
-                company: "(주)투어메이커", ceo: "이 재 명", bizNum: "473-81-03183",
-                address: "강원특별자치도 정선군 정선읍 봉양3길 22-10, 3층", phone: "010-9443-7881", email: "jmlojm@nate.com",
-                sealSrc: "https://blogger.googleusercontent.com/img/a/AVvXsEiweUsH71be_Y3skDUBOVzZE0M4HnXmgllJq7c1JgatYy5eROHYdkvE9rMIcqVl0DQ2ypgr8fkZSQclgQjWOk8yZA5wiF326Ldf4KTrfd_YEsD2zZjyqsRLS65uv50SLZcLFqIvwZly49lEN3sheIMq4HV_VWLs1irf4o8g3-ajXCA7CaOlSvpKCT4Q2XA=s16000",
-                logoSrc: tmLogo
+                introName: "(주)투어메이커", bankName: "신협", bankAccount: "131-022-382094", bankHolder: "(주)투어메이커",
+                company: "(주)투어메이커", ceo: "이 재 명", bizNum: "473-81-03183", address: "강원특별자치도 정선군 정선읍 봉양3길 22-10", phone: "010-9443-7881", email: "jmlojm@nate.com",
+                sealSrc: "https://blogger.googleusercontent.com/img/a/AVvXsEiweUsH71be_Y3skDUBOVzZE0M4HnXmgllJq7c1JgatYy5eROHYdkvE9rMIcqVl0DQ2ypgr8fkZSQclgQjWOk8yZA5wiF326Ldf4KTrfd_YEsD2zZjyqsRLS65uv50SLZcLFqIvwZly49lEN3sheIMq4HV_VWLs1irf4o8g3-ajXCA7CaOlSvpKCT4Q2XA=s16000", logoSrc: tmLogo
             },
             taebaek: {
-                introName: "투어메이커",
-                bankName: "카카오뱅크", bankAccount: "3333-30-1606566", bankHolder: "허나연(투어메이커)",
-                company: "투어메이커", ceo: "허 나 연", bizNum: "768-28-00167",
-                address: "강원특별자치도 태백시 광장로 17, 2층 1호(황지동)", phone: "010-9443-7881", email: "vicky00@naver.com",
-                sealSrc: "https://blogger.googleusercontent.com/img/a/AVvXsEhaeZ9zwjTzPpbIrnTc1ByxZm6_3p_KEVnbrXQOGpsB5siQDZ-9dbtEceldUpwqPBMvVcRcZiFymvYPqb9CIB-N_G-_jHz0cUHOmDuj_ooirThNY_DlHu3mC6_mXaz7qyx4pjcq721ggwvO4ZuyNIfR5KbKrGEgxJiJ2OCCNohQ1OsW_Fnflub-AoPqz3Y=w640-h584",
-                logoSrc: tmLogo
+                introName: "투어메이커", bankName: "카카오뱅크", bankAccount: "3333-30-1606566", bankHolder: "허나연(투어메이커)",
+                company: "투어메이커", ceo: "허 나 연", bizNum: "768-28-00167", address: "강원특별자치도 태백시 광장로 17", phone: "010-9443-7881", email: "vicky00@naver.com",
+                sealSrc: "https://blogger.googleusercontent.com/img/a/AVvXsEhaeZ9zwjTzPpbIrnTc1ByxZm6_3p_KEVnbrXQOGpsB5siQDZ-9dbtEceldUpwqPBMvVcRcZiFymvYPqb9CIB-N_G-_jHz0cUHOmDuj_ooirThNY_DlHu3mC6_mXaz7qyx4pjcq721ggwvO4ZuyNIfR5KbKrGEgxJiJ2OCCNohQ1OsW_Fnflub-AoPqz3Y=w640-h584", logoSrc: tmLogo
             },
             jeju: {
-                introName: "(주)우리들여행",
-                bankName: "농협은행", bankAccount: "301-4025-9889-01", bankHolder: "(주)우리들여행",
-                company: "(주)우리들여행", ceo: "강 원 경", bizNum: "616-81-61548",
-                address: "제주특별자치도 서귀포시 일주동로 8568, 2층 202호(동홍동)", phone: "010-4025-9889", email: "traveljeju@naver.com",
-                sealSrc: "https://blogger.googleusercontent.com/img/a/AVvXsEg8NLs0QyY4LsCGlqN0EPY8MGAJslmc4Fy8nPKcnMGOiHi53sIW6xTt53elP2zXuyENhdgc8_b6U1NlLvFSB-89vWHkXMygPzilm5dVw-_-Rzpvc8XlOUi6rNpfRcx2z6iJtpm5iUzi-xrKz1KwPeNLseGtZpGvz10LSlqxtWK0bEvEl7OXNFtQiSTSPPI",
-                logoSrc: "https://blogger.googleusercontent.com/img/a/AVvXsEhkIGXEfaJ-_hnuZKhDchK_posExV6zRFC9our1Le1ytGsvui1fRuPODev1S2byqlo75MWRdaWT2CUJjEIrNrSVGGI7PBcB424dimkxc0jZrn_gG7v3S_GCGEsC-DjsxaDS1qIu0HF0ObCZF9LygAodexbi0saCcJQJqe9uJ6vQUhl47NkZuRFROBDNP2s"
+                introName: "(주)우리들여행", bankName: "농협은행", bankAccount: "301-4025-9889-01", bankHolder: "(주)우리들여행",
+                company: "(주)우리들여행", ceo: "강 원 경", bizNum: "616-81-61548", address: "제주특별자치도 서귀포시 일주동로 8568", phone: "010-4025-9889", email: "traveljeju@naver.com",
+                sealSrc: "https://blogger.googleusercontent.com/img/a/AVvXsEg8NLs0QyY4LsCGlqN0EPY8MGAJslmc4Fy8nPKcnMGOiHi53sIW6xTt53elP2zXuyENhdgc8_b6U1NlLvFSB-89vWHkXMygPzilm5dVw-_-Rzpvc8XlOUi6rNpfRcx2z6iJtpm5iUzi-xrKz1KwPeNLseGtZpGvz10LSlqxtWK0bEvEl7OXNFtQiSTSPPI", logoSrc: "https://blogger.googleusercontent.com/img/a/AVvXsEhkIGXEfaJ-_hnuZKhDchK_posExV6zRFC9our1Le1ytGsvui1fRuPODev1S2byqlo75MWRdaWT2CUJjEIrNrSVGGI7PBcB424dimkxc0jZrn_gG7v3S_GCGEsC-DjsxaDS1qIu0HF0ObCZF9LygAodexbi0saCcJQJqe9uJ6vQUhl47NkZuRFROBDNP2s"
             }
         };
 
         function changeCompany() {
             const selected = document.querySelector('input[name="companyType"]:checked').value;
             const data = companyData[selected];
-
             document.getElementById('txt-company-name-intro').innerText = data.introName;
             document.getElementById('txt-footer-agency').innerText = data.introName;
             document.getElementById('txt-bank-name').innerText = data.bankName;
             document.getElementById('txt-bank-account').innerText = data.bankAccount;
             document.getElementById('txt-bank-holder').innerText = data.bankHolder;
-            
             document.getElementById('info-company').innerText = data.company;
             document.getElementById('info-ceo').innerText = data.ceo;
             document.getElementById('info-biznum').innerText = data.bizNum;
             document.getElementById('info-address').innerText = data.address;
-            
             document.getElementById('info-phone').value = data.phone;
             document.getElementById('info-email').value = data.email;
-            
             document.getElementById('seal-image').src = data.sealSrc;
             document.getElementById('main-logo-1').src = data.logoSrc;
             document.getElementById('main-logo-2').src = data.logoSrc;
         }
 
         function clearForm() {
-            if(confirm("입력한 모든 내용을 초기화하시겠습니까?")) {
-                const inputs = document.querySelectorAll('input[type="text"]:not(#info-phone):not(#info-email), input[type="date"], input[type="number"], textarea');
-                inputs.forEach(input => {
-                    input.value = '';
-                    if(input.tagName.toLowerCase() === 'textarea') input.style.height = 'auto';
-                });
+            if(confirm("초기화하시겠습니까?")) {
+                document.querySelectorAll('input[type="text"]:not(#info-phone):not(#info-email), input[type="date"], textarea').forEach(i => i.value = '');
             }
         }
 
-        // --- 직인(도장) 드래그 로직 ---
         const seal = document.getElementById('seal-image');
-        let isDragging = false;
-        let startX, startY, initialLeft, initialTop;
-
+        let isDragging = false, startX, startY, initialLeft, initialTop;
         seal.addEventListener('mousedown', dragStart);
         seal.addEventListener('touchstart', dragStart, {passive: false});
-
         function dragStart(e) {
             isDragging = true;
-            if (e.type === 'touchstart') {
-                startX = e.touches[0].clientX;
-                startY = e.touches[0].clientY;
-            } else {
-                startX = e.clientX;
-                startY = e.clientY;
-            }
-            initialLeft = seal.offsetLeft;
-            initialTop = seal.offsetTop;
-            
-            seal.style.transform = 'none'; 
-            seal.style.left = initialLeft + 'px';
-            seal.style.top = initialTop + 'px';
+            startX = (e.type === 'touchstart') ? e.touches[0].clientX : e.clientX;
+            startY = (e.type === 'touchstart') ? e.touches[0].clientY : e.clientY;
+            initialLeft = seal.offsetLeft; initialTop = seal.offsetTop;
             seal.style.cursor = 'grabbing';
         }
-
         document.addEventListener('mousemove', drag);
         document.addEventListener('touchmove', drag, {passive: false});
-
         function drag(e) {
             if (!isDragging) return;
             e.preventDefault();
-            let currentX, currentY;
-            if (e.type === 'touchmove') {
-                currentX = e.touches[0].clientX;
-                currentY = e.touches[0].clientY;
-            } else {
-                currentX = e.clientX;
-                currentY = e.clientY;
-            }
-
-            const dx = currentX - startX;
-            const dy = currentY - startY;
-
-            seal.style.left = `${initialLeft + dx}px`;
-            seal.style.top = `${initialTop + dy}px`;
+            let cX = (e.type === 'touchmove') ? e.touches[0].clientX : e.clientX;
+            let cY = (e.type === 'touchmove') ? e.touches[0].clientY : e.clientY;
+            seal.style.left = `${initialLeft + (cX - startX)}px`;
+            seal.style.top = `${initialTop + (cY - startY)}px`;
         }
+        document.addEventListener('mouseup', () => { isDragging = false; seal.style.cursor = 'grab'; });
+        document.addEventListener('touchend', () => { isDragging = false; seal.style.cursor = 'grab'; });
 
-        document.addEventListener('mouseup', dragEnd);
-        document.addEventListener('touchend', dragEnd);
-
-        function dragEnd() {
-            if(isDragging) {
-                isDragging = false;
-                seal.style.cursor = 'grab';
-            }
-        }
-
-        function changeSealSize(val) {
-            seal.style.width = val + 'px';
-        }
-
-        function toggleSeal(state) {
-            seal.style.display = state === 'hide' ? 'none' : 'block';
-        }
-        
-        // 초기 로딩 시 textarea 높이 조절 세팅
-        window.onload = function() {
-            document.querySelectorAll('textarea').forEach(function(el) {
-                autoResize(el);
-            });
-        }
+        function changeSealSize(v) { seal.style.width = v + 'px'; }
+        function toggleSeal(s) { seal.style.display = (s === 'hide') ? 'none' : 'block'; }
+        window.onload = () => document.querySelectorAll('textarea').forEach(autoResize);
     </script>
 </body>
 </html>
