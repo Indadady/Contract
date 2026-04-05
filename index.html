@@ -161,6 +161,13 @@
             /* 플레이스홀더 인쇄 방지 */
             input::placeholder, textarea::placeholder { color: transparent !important; }
             
+            /* 날짜 캘린더 아이콘 인쇄 방지 */
+            input[type="date"]::-webkit-calendar-picker-indicator,
+            input[type="date"]::-webkit-inner-spin-button {
+                display: none !important;
+                -webkit-appearance: none !important;
+            }
+            
             /* 테이블 강제 고정 */
             table { 
                 display: table !important; 
@@ -348,27 +355,27 @@
                         <th>총 계약 금액</th>
                         <!-- 총 계약금액 셀 패딩과 폰트 크기 대폭 확대 -->
                         <td class="text-center align-middle bg-blue-50/20 print:bg-transparent py-3 print:py-2">
-                            <div class="flex items-center justify-center border-b-2 border-blue-300 print:border-slate-400 pb-1 w-[95%] mx-auto">
+                            <div class="flex items-center justify-center border-b-2 border-blue-300 print:border-none pb-1 w-[95%] mx-auto">
                                 <span class="font-bold text-blue-700 print:text-black mr-1 text-[18px] print:text-[1.2rem]">₩</span>
                                 <input type="text" id="num-amount" oninput="formatNumberInput(this); calculateBalance();" placeholder="25,000,000" class="transparent-input !border-none !bg-transparent !p-0 !m-0 !shadow-none outline-none w-full text-center font-black text-[24px] print:text-[1.5rem] tracking-wide text-blue-700 print:text-black">
                             </div>
                         </td>
                         <th>계약금</th>
                         <td class="text-center align-middle">
-                            <div class="flex items-center justify-center border-b border-slate-200 pb-1 print:border-slate-300 w-[90%] mx-auto mt-1">
+                            <div class="flex items-center justify-center border-b border-slate-200 print:border-none pb-1 w-[90%] mx-auto mt-1">
                                 <span class="font-bold text-slate-700 mr-1 text-[15px] print:text-[1.05rem]">₩</span>
                                 <input type="text" id="deposit-amount" placeholder="1,500,000" oninput="formatNumberInput(this); calculateBalance();" class="transparent-input !border-none !bg-transparent !p-0 !m-0 !shadow-none outline-none w-full text-center font-bold text-[16px] print:text-[1.1rem] tracking-wide text-slate-800">
                             </div>
                         </td>
                         <th>잔금</th>
                         <td class="text-center align-middle">
-                            <div class="flex items-center justify-center border-b border-slate-200 pb-1 print:border-slate-300 w-[90%] mx-auto mt-1">
+                            <div class="flex items-center justify-center border-b border-slate-200 print:border-none pb-1 w-[90%] mx-auto mt-1">
                                 <span class="font-bold text-slate-700 mr-1 text-[15px] print:text-[1.05rem]">₩</span>
                                 <input type="text" id="balance-amount" placeholder="23,500,000" oninput="formatNumberInput(this)" class="transparent-input !border-none !bg-transparent !p-0 !m-0 !shadow-none outline-none w-full text-center font-bold text-[16px] print:text-[1.1rem] tracking-wide text-slate-800">
                             </div>
                             <div class="flex items-center justify-center mt-1.5 text-[11px] print:text-[0.8rem] text-slate-500 w-[90%] mx-auto gap-1">
                                 <span class="whitespace-nowrap mr-1 font-bold">기한:</span>
-                                <input type="date" class="transparent-input !border-none !bg-transparent !p-0 !m-0 !shadow-none outline-none w-full text-center text-slate-700">
+                                <input type="date" class="transparent-input !border-none !bg-transparent !p-0 !m-0 !shadow-none outline-none w-full text-center text-slate-700 print:text-black">
                             </div>
                         </td>
                     </tr>
@@ -419,7 +426,7 @@
                         <span class="w-1 h-4 bg-blue-600 inline-block mr-2 print:bg-slate-800"></span> 4. 계약자 서명
                     </h2>
                     <div class="flex items-center text-[13px] print:text-[0.95rem] font-bold text-slate-800 shrink-0 whitespace-nowrap">
-                        계약체결일 : <input type="text" placeholder="2026년 04월 03일" class="w-28 sm:w-32 text-center bg-transparent border-b border-slate-400 font-bold ml-2 rounded-none p-1 text-[13px] print:text-[0.95rem]">
+                        계약체결일 : <input type="text" placeholder="2026년 04월 03일" class="w-28 sm:w-32 text-center bg-transparent border-b border-slate-400 print:border-none font-bold ml-2 rounded-none p-1 text-[13px] print:text-[0.95rem]">
                     </div>
                 </div>
 
