@@ -258,6 +258,21 @@
     </style>
 </head>
 <body class="font-sans text-gray-900 overflow-x-hidden">
+    <!-- 자체 토스트 메세지 UI -->
+    <div id="toast-msg" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white px-5 py-2.5 rounded-full shadow-lg text-[13px] font-bold opacity-0 transition-opacity duration-300 pointer-events-none z-[100] tracking-wide"></div>
+
+    <!-- 자체 확인 모달 UI -->
+    <div id="confirm-modal" class="fixed inset-0 bg-black/60 z-[100] hidden items-center justify-center backdrop-blur-sm">
+        <div class="bg-white p-6 rounded-xl shadow-2xl w-80 text-center transform transition-transform scale-95" id="modal-content">
+            <div class="text-red-500 mb-3"><i class="fa-solid fa-triangle-exclamation text-3xl"></i></div>
+            <p class="text-slate-800 font-bold mb-5 text-[15px]">입력된 모든 내용을<br>초기화하시겠습니까?</p>
+            <div class="flex gap-2 justify-center">
+                <button onclick="executeClear()" class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg text-[14px] font-bold w-full transition-colors">초기화</button>
+                <button onclick="closeModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 px-5 py-2 rounded-lg text-[14px] font-bold w-full transition-colors">취소</button>
+            </div>
+        </div>
+    </div>
+
     <div class="system-watermark"><span>TOURMAKER SYSTEM</span></div>
 
     <div class="max-w-[1300px] mx-auto py-4 sm:py-8 px-4 flex flex-col lg:flex-row gap-6 lg:gap-8 items-start justify-center relative">
@@ -295,17 +310,32 @@
                 <input type="range" id="sealSize" min="40" max="120" value="70" class="w-full accent-blue-600 mt-1" oninput="changeSealSize(this.value)">
             </div>
 
-            <div class="mt-5 pt-4 border-t border-slate-200 flex flex-col gap-2">
+            <!-- 새로 추가된 JSON 저장/불러오기 영역 -->
+            <div class="mt-4 pt-4 border-t border-slate-200">
+                <label class="font-bold text-slate-700 bg-slate-100 p-1.5 rounded text-center block text-[13px] mb-2">💾 데이터 관리 (JSON)</label>
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="downloadJSON()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 px-2 rounded-lg shadow-sm flex items-center justify-center transition w-full text-[12px]">
+                        <i class="fa-solid fa-download mr-1.5"></i> 저장하기
+                    </button>
+                    <button onclick="document.getElementById('json-upload').click()" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-2 rounded-lg shadow-sm flex items-center justify-center transition w-full text-[12px]">
+                        <i class="fa-solid fa-upload mr-1.5"></i> 불러오기
+                    </button>
+                    <!-- 숨겨진 파일 입력 필드 -->
+                    <input type="file" id="json-upload" accept=".json" style="display:none" onchange="uploadJSON(event)">
+                </div>
+            </div>
+
+            <div class="mt-4 pt-4 border-t border-slate-200 flex flex-col gap-2">
                 <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-md flex items-center justify-center transition w-full text-[14px]">
                     <i class="fa-solid fa-print mr-2"></i> PDF 저장 / 인쇄하기
                 </button>
-                <button onclick="clearForm()" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2.5 px-4 rounded-lg shadow flex items-center justify-center transition w-full text-[13px]">
-                    <i class="fa-solid fa-rotate-right mr-2"></i> 내용 초기화
+                <button onclick="openClearModal()" class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2.5 px-4 rounded-lg shadow flex items-center justify-center transition w-full text-[13px]">
+                    <i class="fa-solid fa-rotate-right mr-2"></i> 양식 초기화
                 </button>
             </div>
         </div>
 
-        <div class="print-container bg-white w-full lg:w-[21cm] px-6 pt-5 pb-10 shadow-xl box-border mx-auto lg:mx-0 rounded-lg lg:rounded-none border border-slate-200">
+        <div class="print-container bg-white w-full lg:w-[21cm] px-6 pt-5 pb-10 shadow-xl box-border mx-auto lg:mx-0 rounded-lg lg:rounded-none border border-slate-200 relative">
             
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end border-b-2 border-slate-800 pb-2.5 mb-4 gap-3 sm:gap-0">
                 <div class="order-last sm:order-first">
@@ -337,25 +367,25 @@
                 <tbody>
                     <tr>
                         <th>여행 상품명</th>
-                        <td colspan="3"><input type="text" placeholder="예: 2026년 00기관 우수직원 해외 연수" class="trip-meta-center"></td>
+                        <td colspan="3"><input type="text" id="trip-name" placeholder="예: 2026년 00기관 우수직원 해외 연수" class="trip-meta-center"></td>
                     </tr>
                     <tr>
                         <th>여행 기간</th>
                         <td>
                             <div class="trip-date-wrap">
-                                <input type="date" class="p-1 text-center"> 
+                                <input type="date" id="trip-start" class="p-1 text-center"> 
                                 <span class="font-bold shrink-0">~</span> 
-                                <input type="date" class="p-1 text-center">
+                                <input type="date" id="trip-end" class="p-1 text-center">
                             </div>
                         </td>
                         <th>여행 지역</th>
-                        <td><input type="text" placeholder="예: 싱가포르 등" class="trip-meta-center"></td>
+                        <td><input type="text" id="trip-region" placeholder="예: 싱가포르 등" class="trip-meta-center"></td>
                     </tr>
                     <tr>
                         <th>여행 인원</th>
-                        <td><input type="text" placeholder="예: 성인 34명" class="trip-meta-center"></td>
+                        <td><input type="text" id="trip-pax" placeholder="예: 성인 34명" class="trip-meta-center"></td>
                         <th>교통 수단</th>
-                        <td><input type="text" placeholder="예: 대한항공 등" class="trip-meta-center"></td>
+                        <td><input type="text" id="trip-transport" placeholder="예: 대한항공 등" class="trip-meta-center"></td>
                     </tr>
                 </tbody>
             </table>
@@ -402,7 +432,7 @@
                             </div>
                             <div class="flex items-center justify-center gap-1 mt-1 text-[10px] text-slate-500 whitespace-nowrap">
                                 <span class="font-bold shrink-0">기한:</span>
-                                <input type="date" class="!border-none !bg-transparent !p-0 w-[102px] min-w-[102px] text-[10px] leading-none text-center">
+                                <input type="date" id="balance-date" class="!border-none !bg-transparent !p-0 w-[102px] min-w-[102px] text-[10px] leading-none text-center">
                             </div>
                         </td>
                     </tr>
@@ -427,15 +457,15 @@
                 <tbody>
                     <tr>
                         <th>포함 사항</th>
-                        <td><textarea rows="2" placeholder="전일정 숙박/식사, 관광지 입장료 등" oninput="autoResize(this)"></textarea></td>
+                        <td><textarea id="txt-inclusion" rows="2" placeholder="전일정 숙박/식사, 관광지 입장료 등" oninput="autoResize(this)"></textarea></td>
                     </tr>
                     <tr>
                         <th>불포함 사항</th>
-                        <td><textarea rows="1" placeholder="개인 경비, 매너팁 등" oninput="autoResize(this)"></textarea></td>
+                        <td><textarea id="txt-exclusion" rows="1" placeholder="개인 경비, 매너팁 등" oninput="autoResize(this)"></textarea></td>
                     </tr>
                     <tr>
                         <th>특약/기타</th>
-                        <td><textarea rows="2" placeholder="표준약관 및 특별약관에 따릅니다." oninput="autoResize(this)"></textarea></td>
+                        <td><textarea id="txt-special" rows="2" placeholder="표준약관 및 특별약관에 따릅니다." oninput="autoResize(this)"></textarea></td>
                     </tr>
                 </tbody>
             </table>
@@ -447,7 +477,7 @@
                     </h2>
                     <div class="contract-date-wrap text-[13px] font-bold text-slate-800 sm:ml-4">
                         <span class="shrink-0">계약체결일 :</span>
-                        <input type="text" placeholder="2026년 04월 03일" class="w-[124px] min-w-[124px] max-w-[124px] text-center bg-transparent border-b border-slate-400 font-bold p-1 shrink-0">
+                        <input type="text" id="contract-date" placeholder="2026년 04월 03일" class="w-[124px] min-w-[124px] max-w-[124px] text-center bg-transparent border-b border-slate-400 font-bold p-1 shrink-0">
                     </div>
                 </div>
 
@@ -468,9 +498,9 @@
                     <div class="w-full md:w-[44%] border border-slate-300 rounded-lg p-5 print:bg-white shadow-sm print:shadow-none">
                         <h3 class="font-bold text-center text-slate-800 mb-3 pb-2 border-b border-slate-200 text-[14px]">여행자 (또는 대표기관)</h3>
                         <div class="space-y-4 text-[12px] px-1">
-                            <div class="flex items-center gap-2"><span class="w-16 font-semibold text-slate-600 shrink-0">단체명</span><input type="text" placeholder="예: 00중학교" class="flex-1 border-b p-1"></div>
-                            <div class="flex items-center gap-2"><span class="w-16 font-semibold text-slate-600 shrink-0">대표자</span><input type="text" placeholder="성명" class="flex-1 border-b p-1"><span class="text-slate-400 text-[10px] shrink-0 ml-1">(인)</span></div>
-                            <div class="flex items-center gap-2"><span class="w-16 font-semibold text-slate-600 shrink-0">연락처</span><input type="text" placeholder="010-0000-0000" class="flex-1 border-b p-1"></div>
+                            <div class="flex items-center gap-2"><span class="w-16 font-semibold text-slate-600 shrink-0">단체명</span><input type="text" id="client-name" placeholder="예: 00중학교" class="flex-1 border-b p-1"></div>
+                            <div class="flex items-center gap-2"><span class="w-16 font-semibold text-slate-600 shrink-0">대표자</span><input type="text" id="client-ceo" placeholder="성명" class="flex-1 border-b p-1"><span class="text-slate-400 text-[10px] shrink-0 ml-1">(인)</span></div>
+                            <div class="flex items-center gap-2"><span class="w-16 font-semibold text-slate-600 shrink-0">연락처</span><input type="text" id="client-phone" placeholder="010-0000-0000" class="flex-1 border-b p-1"></div>
                         </div>
                     </div>
                 </div>
@@ -484,11 +514,47 @@
                 <div class="legal-note-powered">[System Powered by <a href="https://tourmaker.kr" target="_blank" style="color: inherit; text-decoration: underline; font-weight: 700;">TOURMAKER</a>]</div>
             </div>
             
-            </div>
-    </div>
+        </div>
     </div>
 
     <script>
+        // --- 유틸리티 및 UI 관련 함수 ---
+        function showToast(message) {
+            const toast = document.getElementById('toast-msg');
+            toast.innerText = message;
+            toast.style.opacity = '1';
+            setTimeout(() => { toast.style.opacity = '0'; }, 3000);
+        }
+
+        function openClearModal() {
+            const modal = document.getElementById('confirm-modal');
+            const content = document.getElementById('modal-content');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('confirm-modal');
+            const content = document.getElementById('modal-content');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 200);
+        }
+
+        function executeClear() {
+            document.querySelectorAll('input[type="text"]:not(#info-phone):not(#info-email), input[type="date"], textarea').forEach(i => i.value = '');
+            document.querySelectorAll('textarea').forEach(autoResize);
+            closeModal();
+            showToast("양식이 초기화되었습니다.");
+        }
+
         function formatNumberInput(input) {
             let val = input.value.replace(/[^0-9]/g, '');
             if (!val) { input.value = ''; return; }
@@ -512,6 +578,7 @@
             textarea.style.height = textarea.scrollHeight + 'px';
         }
 
+        // --- 회사 및 직인 관련 로직 ---
         const tmLogo = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHfgIX70O5k6Anuo0UgALIdaG9jSga9auHu3uyz0uEirylGPAJnjN_qQbvEGMUvPqUQf_g9FMNUHRxlDcUBf4vZ3Mpy4TnA9WxbmzWYK11gt2zuy_Irl4wctNFjcjLyPo0GPXV792o_J7L9guRMuDfeC1gy7USwywjYbECZgzcsHybuGRRAXAnO1eNmP8/s320/logo.png";
         const companyData = {
             jeongseon: {
@@ -535,8 +602,6 @@
             const selected = document.querySelector('input[name="companyType"]:checked').value;
             const data = companyData[selected];
             document.getElementById('txt-company-name-intro').innerText = data.introName;
-            const footerAgency = document.getElementById('txt-footer-agency');
-            if (footerAgency) footerAgency.innerText = data.introName;
             document.getElementById('txt-bank-name').innerText = data.bankName;
             document.getElementById('txt-bank-account').innerText = data.bankAccount;
             document.getElementById('txt-bank-holder').innerText = data.bankHolder;
@@ -549,12 +614,6 @@
             document.getElementById('seal-image').src = data.sealSrc;
             document.getElementById('main-logo-1').src = data.logoSrc;
             document.getElementById('main-logo-2').src = data.logoSrc;
-        }
-
-        function clearForm() {
-            if(confirm("초기화하시겠습니까?")) {
-                document.querySelectorAll('input[type="text"]:not(#info-phone):not(#info-email), input[type="date"], textarea').forEach(i => i.value = '');
-            }
         }
 
         const seal = document.getElementById('seal-image');
@@ -583,6 +642,135 @@
 
         function changeSealSize(v) { seal.style.width = v + 'px'; }
         function toggleSeal(s) { seal.style.display = (s === 'hide') ? 'none' : 'block'; }
+
+        // --- JSON 저장(Export) 및 불러오기(Import) 기능 ---
+        function downloadJSON() {
+            const getVal = id => document.getElementById(id) ? document.getElementById(id).value : '';
+            
+            const exportData = {
+                companyType: document.querySelector('input[name="companyType"]:checked').value,
+                sealToggle: document.querySelector('input[name="sealToggle"]:checked').value,
+                sealSize: document.getElementById('sealSize').value,
+                sealLeft: document.getElementById('seal-image').style.left || '',
+                sealTop: document.getElementById('seal-image').style.top || '',
+                vatType: document.querySelector('input[name="vatType"]:checked').value,
+                
+                tripName: getVal('trip-name'),
+                tripStart: getVal('trip-start'),
+                tripEnd: getVal('trip-end'),
+                tripRegion: getVal('trip-region'),
+                tripPax: getVal('trip-pax'),
+                tripTransport: getVal('trip-transport'),
+                
+                numAmount: getVal('num-amount'),
+                depositAmount: getVal('deposit-amount'),
+                balanceAmount: getVal('balance-amount'),
+                balanceDate: getVal('balance-date'),
+                
+                txtInclusion: getVal('txt-inclusion'),
+                txtExclusion: getVal('txt-exclusion'),
+                txtSpecial: getVal('txt-special'),
+                
+                contractDate: getVal('contract-date'),
+                infoPhone: getVal('info-phone'),
+                infoEmail: getVal('info-email'),
+                clientName: getVal('client-name'),
+                clientCeo: getVal('client-ceo'),
+                clientPhone: getVal('client-phone')
+            };
+
+            const jsonString = JSON.stringify(exportData, null, 2);
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            const fileName = exportData.clientName ? `여행계약서_${exportData.clientName}.json` : `표준여행계약서_백업.json`;
+            link.download = fileName;
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+
+            showToast("데이터 저장이 완료되었습니다.");
+        }
+
+        function uploadJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+
+                    // 1. 라디오 버튼 설정 및 트리거
+                    if(data.companyType) {
+                        const compRadio = document.querySelector(`input[name="companyType"][value="${data.companyType}"]`);
+                        if(compRadio) { compRadio.checked = true; changeCompany(); }
+                    }
+                    if(data.sealToggle) {
+                        const sealRadio = document.querySelector(`input[name="sealToggle"][value="${data.sealToggle}"]`);
+                        if(sealRadio) { sealRadio.checked = true; toggleSeal(data.sealToggle); }
+                    }
+                    if(data.vatType) {
+                        const vatRadio = document.querySelector(`input[name="vatType"][value="${data.vatType}"]`);
+                        if(vatRadio) vatRadio.checked = true;
+                    }
+
+                    // 2. 직인 스타일 설정
+                    if(data.sealSize) {
+                        document.getElementById('sealSize').value = data.sealSize;
+                        changeSealSize(data.sealSize);
+                    }
+                    const seal = document.getElementById('seal-image');
+                    if(data.sealLeft !== undefined) seal.style.left = data.sealLeft;
+                    if(data.sealTop !== undefined) seal.style.top = data.sealTop;
+
+                    // 3. 텍스트, 날짜 입력 필드 맵핑
+                    const setVal = (id, val) => { 
+                        if(document.getElementById(id) && val !== undefined) {
+                            document.getElementById(id).value = val; 
+                        }
+                    };
+
+                    setVal('trip-name', data.tripName);
+                    setVal('trip-start', data.tripStart);
+                    setVal('trip-end', data.tripEnd);
+                    setVal('trip-region', data.tripRegion);
+                    setVal('trip-pax', data.tripPax);
+                    setVal('trip-transport', data.tripTransport);
+                    setVal('num-amount', data.numAmount);
+                    setVal('deposit-amount', data.depositAmount);
+                    setVal('balance-amount', data.balanceAmount);
+                    setVal('balance-date', data.balanceDate);
+                    setVal('txt-inclusion', data.txtInclusion);
+                    setVal('txt-exclusion', data.txtExclusion);
+                    setVal('txt-special', data.txtSpecial);
+                    setVal('contract-date', data.contractDate);
+                    setVal('info-phone', data.infoPhone);
+                    setVal('info-email', data.infoEmail);
+                    setVal('client-name', data.clientName);
+                    setVal('client-ceo', data.clientCeo);
+                    setVal('client-phone', data.clientPhone);
+
+                    // 4. UI 갱신 (Textarea 높이 조절 등)
+                    document.querySelectorAll('textarea').forEach(autoResize);
+                    
+                    showToast("성공적으로 데이터를 불러왔습니다.");
+
+                } catch (err) {
+                    console.error("JSON 파싱 에러:", err);
+                    showToast("유효하지 않은 데이터 파일입니다.");
+                } finally {
+                    // 같은 파일을 다시 선택해도 change 이벤트가 발생하도록 value 초기화
+                    event.target.value = '';
+                }
+            };
+            reader.readAsText(file);
+        }
+
         window.onload = () => {
             document.querySelectorAll('textarea').forEach(autoResize);
             changeCompany();
