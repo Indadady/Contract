@@ -251,6 +251,9 @@
             p { font-size: 0.88rem !important; line-height: 1.5 !important; }
             .hidden.print\:block { display: block !important; }
             #seal-image { border: none !important; mix-blend-mode: multiply !important; }
+            #account-visible.hidden,
+            #account-hidden.hidden { display: none !important; }
+            #account-hidden.flex { display: flex !important; }
             .legal-note-text p { font-size: 10px !important; line-height: 1.4 !important; color: #64748b !important; white-space: normal !important; }
             .legal-note-powered { font-size: 10px !important; line-height: 1.4 !important; color: #64748b !important; white-space: nowrap !important; }
             .system-watermark { display: flex !important; }
@@ -308,6 +311,25 @@
                     </div>
                 </div>
                 <input type="range" id="sealSize" min="40" max="120" value="70" class="w-full accent-blue-600 mt-1" oninput="changeSealSize(this.value)">
+            </div>
+
+            <div class="mt-4 text-[13px] bg-slate-50 p-3 rounded-lg border border-slate-100">
+                <label class="font-bold text-slate-700 block mb-2">🏦 입금 계좌</label>
+                <div class="flex flex-col gap-1.5 text-[12px]">
+                    <label class="flex items-center cursor-pointer hover:text-slate-900">
+                        <input type="radio" name="accountSource" value="issuer" checked onchange="applyAccount()" class="mr-1.5 h-3.5 w-3.5 text-blue-600">
+                        발급 주체 계좌
+                    </label>
+                    <label class="flex items-center cursor-pointer hover:text-slate-900">
+                        <input type="radio" name="accountSource" value="jeongseon" onchange="applyAccount()" class="mr-1.5 h-3.5 w-3.5 text-blue-600">
+                        정선 법인 계좌
+                    </label>
+                    <label class="flex items-center cursor-pointer hover:text-slate-900">
+                        <input type="radio" name="accountSource" value="hide" onchange="applyAccount()" class="mr-1.5 h-3.5 w-3.5 text-blue-600">
+                        숨김 (별도 안내)
+                    </label>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-1.5 leading-snug">태백(일반) 선택 시 정선 법인 계좌가 기본입니다.</p>
             </div>
 
             <!-- 새로 추가된 JSON 저장/불러오기 영역 -->
@@ -439,10 +461,13 @@
                     <tr>
                         <th class="bg-blue-50/50 print:bg-slate-100">입금 계좌</th>
                         <td colspan="5" class="bg-blue-50/10 print:bg-white">
-                            <div class="flex items-center justify-center font-bold text-[13px] print:text-[0.95rem] text-center">
+                            <div id="account-visible" class="flex items-center justify-center font-bold text-[13px] print:text-[0.95rem] text-center">
                                 <span id="txt-bank-name" class="mr-3 text-slate-700">신협</span>
                                 <span id="txt-bank-account" class="mr-4 text-blue-600 print:text-black text-[18px] print:text-[1.1rem] tracking-wider font-extrabold">131-022-382094</span>
                                 <span class="text-slate-800">예금주 : <span id="txt-bank-holder">(주)투어메이커</span></span>
+                            </div>
+                            <div id="account-hidden" class="hidden items-center justify-center font-bold text-[13px] print:text-[0.95rem] text-center text-slate-600">
+                                별도 안내
                             </div>
                         </td>
                     </tr>
@@ -486,8 +511,8 @@
                         <h3 class="font-bold text-center text-slate-800 mb-3 pb-2 border-b border-slate-200 text-[14px]">여행업자 (여행사)</h3>
                         <div class="space-y-2 text-[12px] print:text-[0.9rem]">
                             <div class="flex items-center"><span class="w-16 font-semibold text-slate-600 shrink-0">상호명</span> <span id="info-company" class="font-bold">(주)투어메이커</span></div>
-                            <div class="flex items-center"><span class="w-16 font-semibold text-slate-600 shrink-0">대표자</span> <span id="info-ceo" class="font-bold">이 재 명</span> <span class="ml-1 text-slate-400 font-normal">(인)</span></div>
-                            <div class="flex items-center"><span class="w-16 font-semibold text-slate-600 shrink-0">등록번호</span> <span id="info-biznum">473-81-03183</span></div>
+                            <div class="flex items-center"><span class="w-16 font-semibold text-slate-600 shrink-0">대표자</span> <input type="text" id="info-ceo" value="이 재 명" class="flex-1 bg-transparent border-none p-0 font-bold"><span class="ml-1 text-slate-400 font-normal">(인)</span></div>
+                            <div class="flex items-center"><span class="w-16 font-semibold text-slate-600 shrink-0">등록번호</span> <input type="text" id="info-biznum" value="473-81-03183" class="flex-1 bg-transparent border-none p-0"></div>
                             <div class="flex items-start"><span class="w-16 font-semibold text-slate-600 shrink-0">소재지</span> <span id="info-address" class="leading-tight break-keep">강원특별자치도 정선군 정선읍 봉양3길 22-10</span></div>
                             <div class="flex items-center"><span class="w-16 font-semibold text-slate-600 shrink-0">연락처</span> <input type="text" value="010-9443-7881" class="flex-1 bg-transparent border-none p-0" id="info-phone"></div>
                             <div class="flex items-center"><span class="w-16 font-semibold text-slate-600 shrink-0">이메일</span> <input type="text" value="jmlojm@nate.com" class="flex-1 bg-transparent border-none p-0" id="info-email"></div>
@@ -549,7 +574,7 @@
         }
 
         function executeClear() {
-            document.querySelectorAll('input[type="text"]:not(#info-phone):not(#info-email), input[type="date"], textarea').forEach(i => i.value = '');
+            document.querySelectorAll('input[type="text"]:not(#info-phone):not(#info-email):not(#info-ceo):not(#info-biznum), input[type="date"], textarea').forEach(i => i.value = '');
             document.querySelectorAll('textarea').forEach(autoResize);
             closeModal();
             showToast("양식이 초기화되었습니다.");
@@ -602,18 +627,19 @@
             const selected = document.querySelector('input[name="companyType"]:checked').value;
             const data = companyData[selected];
             document.getElementById('txt-company-name-intro').innerText = data.introName;
-            document.getElementById('txt-bank-name').innerText = data.bankName;
-            document.getElementById('txt-bank-account').innerText = data.bankAccount;
-            document.getElementById('txt-bank-holder').innerText = data.bankHolder;
             document.getElementById('info-company').innerText = data.company;
-            document.getElementById('info-ceo').innerText = data.ceo;
-            document.getElementById('info-biznum').innerText = data.bizNum;
+            document.getElementById('info-ceo').value = data.ceo;
+            document.getElementById('info-biznum').value = data.bizNum;
             document.getElementById('info-address').innerText = data.address;
             document.getElementById('info-phone').value = data.phone;
             document.getElementById('info-email').value = data.email;
             document.getElementById('seal-image').src = data.sealSrc;
             document.getElementById('main-logo-1').src = data.logoSrc;
             document.getElementById('main-logo-2').src = data.logoSrc;
+
+            // 태백 투어메이커는 정선 법인 계좌가 기본, 그 외는 발급 주체 계좌
+            const accountValue = selected === 'taebaek' ? 'jeongseon' : 'issuer';
+            setAccountSource(accountValue);
         }
 
         const seal = document.getElementById('seal-image');
@@ -643,6 +669,46 @@
         function changeSealSize(v) { seal.style.width = v + 'px'; }
         function toggleSeal(s) { seal.style.display = (s === 'hide') ? 'none' : 'block'; }
 
+        function bankDataForAccount(source) {
+            const selected = document.querySelector('input[name="companyType"]:checked').value;
+            if (source === 'jeongseon') return companyData.jeongseon;
+            return companyData[selected];
+        }
+
+        function applyAccount() {
+            const sourceEl = document.querySelector('input[name="accountSource"]:checked');
+            const source = sourceEl ? sourceEl.value : 'issuer';
+            const visible = document.getElementById('account-visible');
+            const hidden = document.getElementById('account-hidden');
+            const hide = source === 'hide';
+
+            visible.classList.toggle('hidden', hide);
+            hidden.classList.toggle('hidden', !hide);
+            hidden.classList.toggle('flex', hide);
+
+            if (!hide) {
+                const bank = bankDataForAccount(source);
+                document.getElementById('txt-bank-name').innerText = bank.bankName;
+                document.getElementById('txt-bank-account').innerText = bank.bankAccount;
+                document.getElementById('txt-bank-holder').innerText = bank.bankHolder;
+            }
+        }
+
+        function setAccountSource(value) {
+            const radio = document.querySelector(`input[name="accountSource"][value="${value}"]`);
+            if (radio) {
+                radio.checked = true;
+                applyAccount();
+            }
+        }
+
+        function resolveAccountSource(data) {
+            if (data.accountSource) return data.accountSource;
+            if (data.accountToggle === 'hide') return 'hide';
+            if (data.accountToggle === 'show') return 'issuer';
+            return null;
+        }
+
         // --- JSON 저장(Export) 및 불러오기(Import) 기능 ---
         function downloadJSON() {
             const getVal = id => document.getElementById(id) ? document.getElementById(id).value : '';
@@ -650,6 +716,7 @@
             const exportData = {
                 companyType: document.querySelector('input[name="companyType"]:checked').value,
                 sealToggle: document.querySelector('input[name="sealToggle"]:checked').value,
+                accountSource: document.querySelector('input[name="accountSource"]:checked').value,
                 sealSize: document.getElementById('sealSize').value,
                 sealLeft: document.getElementById('seal-image').style.left || '',
                 sealTop: document.getElementById('seal-image').style.top || '',
@@ -672,6 +739,8 @@
                 txtSpecial: getVal('txt-special'),
                 
                 contractDate: getVal('contract-date'),
+                infoCeo: getVal('info-ceo'),
+                infoBiznum: getVal('info-biznum'),
                 infoPhone: getVal('info-phone'),
                 infoEmail: getVal('info-email'),
                 clientName: getVal('client-name'),
@@ -714,6 +783,8 @@
                         const sealRadio = document.querySelector(`input[name="sealToggle"][value="${data.sealToggle}"]`);
                         if(sealRadio) { sealRadio.checked = true; toggleSeal(data.sealToggle); }
                     }
+                    const accountSource = resolveAccountSource(data);
+                    if(accountSource) setAccountSource(accountSource);
                     if(data.vatType) {
                         const vatRadio = document.querySelector(`input[name="vatType"][value="${data.vatType}"]`);
                         if(vatRadio) vatRadio.checked = true;
@@ -749,6 +820,11 @@
                     setVal('txt-exclusion', data.txtExclusion);
                     setVal('txt-special', data.txtSpecial);
                     setVal('contract-date', data.contractDate);
+                    setVal('info-ceo', data.infoCeo);
+                    setVal('info-biznum', data.infoBiznum);
+                    if (data.infoCeo === undefined && data.ceoSource === 'jeongseon') {
+                        document.getElementById('info-ceo').value = companyData.jeongseon.ceo;
+                    }
                     setVal('info-phone', data.infoPhone);
                     setVal('info-email', data.infoEmail);
                     setVal('client-name', data.clientName);
